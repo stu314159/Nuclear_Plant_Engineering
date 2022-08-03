@@ -8,7 +8,7 @@ The objectives of this lecture are:
 \end{itemize}
 
 \section{Multi-variable Non-linear Equation}
-In the last lecture, we analyzed a Rankine cycle with a moisture separator, re-heater, and an open feedwater heat exchanger.  In performing the analysis of the cycle, we arrived a two non-linear equations expressing conservation of energy for the re-heater and the open feedwater heater.  
+In the last lecture, we analyzed a Rankine cycle with a moisture separator, re-heater, and an open feedwater heat exchanger.  In performing the analysis of the cycle, we obtained two non-linear equations expressing conservation of energy for the re-heater and the open feedwater heater.  
 
 For the OFWH:\marginnote{\textbf{Note: } For this example, assume that all state point property values and mass flow rates such as $h$, $x$, and $\dot{m}_s$ are known.
 
@@ -41,7 +41,7 @@ ReHeater_heatBalance = @(f) f(1)*h(5) + ...
 \end{minipage}
 Now we have two in-line functions that, given the correct values for $f_1$ and $f_2$, will be equal to zero.  We have re-cast our problem into a ``root-finding'' problem; one that many computational tools have been developed to solve.
 
-\newthought{The way} we are going to solve this is using the built-in MATLAB function FMINCON.  FMINCON is a function for solving a constrained minimization problem for a non-linear function with multiple variables.  FMINCON expects only one equation to solve, so we will need to combine the 2 equations above into a single equation.  We will do this as follows:
+\newthought{The way} we are going to solve this is using the built-in MATLAB function FMINCON.  FMINCON is a function for solving a constrained minimization problem for a non-linear function with multiple variables.  FMINCON expects only one equation to solve, so we will need to combine the two equations above into a single equation.  We will do this as follows:
 
 \begin{lstlisting}[caption=Combine two heat balace equations into one.]
 balance = @(f) abs(OFWH_heatBalance(f)) + ...
