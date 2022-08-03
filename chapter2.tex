@@ -35,7 +35,7 @@ Or
 \begin{enumerate}[resume]
 \item Install the required Python and MATLAB tools on your own laptop.
 \begin{enumerate}
-\item Download Anaconda (Anaconda3, Windows 64-bit, Python version 3.8) \marginnote[-2.25cm]{\textbf{Note: }If you opt for this method, you will have Python installed on your own laptop.  This is worthwhile.  When you graduate from USNA you will lose access to MATLAB along with many of the other non-free software packages that you may have become accustomed to using as a midshipman.  You can take Python with you and it can become the most powerful tool in your computational toolbox.}
+\item Download Anaconda (Anaconda3, Windows 64-bit, Python version 3.8) \marginnote[-2.25cm]{\textbf{Note: }If you opt for this method, you will have Python installed on your own laptop.  This is worthwhile.  When you graduate from USNA you will lose access to MATLAB along with all of the other non-free software packages that you may have become accustomed to using as a midshipman.  Python is free and you can take it with you and it can become the most powerful tool in your computational toolbox.}
 \item From Anaconda prompt: conda install -c conda-forge coolprop
 \item Locate Python executable.  One way to do this is from Anaconda prompt use the command: where python
 \item In MATLAB call \emph{pyversion} with path to Python executable. E.g. >>pyversion('[path to python executable]')
@@ -71,7 +71,7 @@ end
 
 \begin{enumerate}[resume]
 \item Construct a simple fluid object.
-\end{enumerate}\marginnote{The leading \emph{py} tells MATLAB that what follows must be executed by the Python interpreter. The \emph{EasyProp} points to a particular Python library, and \emph{simpleFluid} is a function call within the EasyProp library.  The function \emph{simpleFluid} is a special type of function called a \emph{constructor}.}
+\end{enumerate}\marginnote{The leading \emph{py} tells MATLAB that what follows must be executed by the Python interpreter. The name \emph{EasyProp} points to a particular Python library, and \emph{simpleFluid} is a function call within the EasyProp library.  The function \emph{simpleFluid} is a special type of function called a \emph{constructor}.}
 \begin{lstlisting}[caption=Construct a \emph{simpleFluid} object]
 units = 'USCS';
 fluid = 'Water';
@@ -108,7 +108,7 @@ Pmin = 1.5; % psia, min pressure
 \end{lstlisting}
 
 \begin{enumerate}[resume]
-\item Allocate fluid property arrays \marginnote{Pre-allocation of arrays is mandated in the ER468 style rules.  In this example we construct the arrays using the \emph{nan} function which, besides allocating memory for the arrays, initializes each value to ``Not-a-number'' (or \emph{nan}).  ``Not-a-number'' is preferred because it can never be mistaken for a number and thus can never be mistaken for a valid property value. This avoids the common logical error of using an array value with some incorrect-but-valid initial value (like zero).}  
+\item Allocate fluid property arrays \marginnote{Pre-allocation of arrays is mandated in the ER468 style rules.  In this example we construct the arrays using the \emph{nan} function which, besides allocating memory for the arrays, initializes each value to ``Not-a-number'' (or \emph{nan}).  ``Not-a-number'' is preferred because it can never be mistaken for a number and thus can never be mistaken for a valid property value. This avoids the common logical error of using an array value with some valid-but-incorrect initial value (like zero).}  
 \end{enumerate}
 
 \begin{lstlisting}[caption=Allocate arrays to hold fluid property data.]
@@ -132,7 +132,7 @@ An example function call as follows: water.h\_pT(14.7,25)
 \underbracket{\text{water}}_{\text{object}}.\underbracket{\text{h\_pT}}_{\text{function}}\underbracket{\text{(14.7,25)}}_{\text{arguments}}
 \end{equation*}
 
-The "object" is the name of the Python object constructed in the step above.  The function name is given by convention;\marginnote[-3cm]{\textbf{Note: }Function name convention: [output property]\_[input property][input property](Arg 1, Arg 2).  In most cases the output thermodynamic property is determined based on two other known properties. In the case given, enthalpy (h) is determined as a function of pressure (p) and temperature (T)} in this case the property to be returned is the fluid enthalpy as a function of pressure and temperature.  The arguments - 14.7 and 25 - are the corresponding pressure and temperature; in this unit system they are given in units of psia and degrees Fahrenheit respectively.
+The "object" is the name of the Python object constructed in the step above.  The function name is given by convention;\marginnote[-3cm]{\textbf{Note: }Function name convention: [output property]\_[input property][input property](Arg 1, Arg 2).  In most cases the output thermodynamic property is determined based on two other known properties. In the case given, enthalpy (h) is determined as a function of pressure (p) and temperature (T)} in this case the property to be returned is the fluid enthalpy as a function of pressure and temperature.  The arguments---14.7 and 25---are the corresponding pressure and temperature; in this unit system they are given in units of psia and degrees Fahrenheit respectively.
 \begin{margintable}
 \begin{tabular}{lc}
 \toprule
@@ -205,7 +205,13 @@ w_turbine = h(3) - h(4);
 % isobaric heat rejection in the condenser from sp 4 to sp 1
 q_r = h(1) - h(4);
 \end{lstlisting}
-
+\marginnote[-8.0cm]{\textbf{Note:} When writing your own MATLAB scripts for thermodynamic cycle analysis, you are \emph{strongly encouraged} to write the necessary code to find \underline{\emph{one or two}} state point properties, run your script and examine the state point properties you have just found.  This will allow you to:
+\begin{enumerate}
+\item Immediately identify the line responsible for the error in cases where you made a mistake in typing in a MATLAB or EasyProp function; and
+\item Allow you to sanity-check the thermodynamic property you just found.
+\end{enumerate}
+Observance of this practice will save you \emph{many} hours of debugging effort.  The example codes in the appendices illustrate a convenient way to have a state-point property table output in your MATLAB script.
+}
 \begin{enumerate}[resume]
 \item Complete analysis to find thermal efficiency and net work
 \end{enumerate}
