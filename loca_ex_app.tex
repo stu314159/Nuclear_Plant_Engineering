@@ -1,0 +1,183 @@
+\chapter{Example - LOCA Analysis with MATLAB}
+\label{app:LOCA_ex}
+\section{Introduction}
+
+This appendix provides the full MATLAB code to carry out an analysis of a Loss of Coolant Accident (LOCA) for a PWR containment using MATLAB.  The appendix includes two nearly identical analysis:
+\begin{enumerate}
+\item LOCA analysis without considering humidity in the air; and
+\item LCOA analysis \emph{with} considering humidity in the air.
+\end{enumerate}
+
+The problem statement is, as close as possible, the same as given by Example 7.1 in the Todreas textbook.  The results for both analysis are very similar; the final temperature matches to within a degree F, and a couple of kPa.
+
+\begin{fullwidth}
+\section{LOCA analysis without humid air}
+\begin{lstlisting}
+clear
+clc
+close 'all'
+
+EasyProp_path = ' '; %<- Path if EasyProp.py is in your current directory
+if count(py.sys.path,EasyProp_path) == 0  % <-- see if desired directory is on path
+    insert(py.sys.path,int32(0),EasyProp_path); %<-- if not; add it.
+end
+
+
+%% establish air and water objects
+
+units = 'SI';
+water = py.EasyProp.simpleFluid('Water',units);
+air = py.EasyProp.simpleFluid('Air',units);
+
+%% set initial temperature, pressure, and volumes
+V_primary = 354; % m^3, given
+V_containment = 50970; % m^3, given
+V_total = V_primary + V_containment; % m^3
+
+Po_primary = 15500; % kPa, initial primary pressure, given
+To_primary = 344.75; % C, initial primary temperature, given
+
+Po_containment = 101; % kPa, initial containment pressure, given
+To_containment = 26.85; % C, initial containment temperature, given
+
+Q_total = 0; % kJ, total net energy exchange in/out of the containment during the transient.
+
+%% compute the mass of air and water
+
+rho_a_0 = 1./air.v_pT(Po_containment,To_containment); % kg/m^3
+mass_air = V_containment*rho_a_0; % kg
+
+rho_w_0 = 1./water.v_pT(Po_primary,To_primary); % kg/m^3
+mass_water = V_primary*rho_w_0; % kg
+
+%% compute specific internal energy
+
+u_air_0 = air.u_pT(Po_containment,To_containment); %kJ/kg
+u_water_0 = water.u_pT(Po_primary,To_primary); % kJ/kg
+
+%% set up system of equations to solve for the final state.
+
+v_air_1 = V_total/mass_air; % m^3/kg 
+v_water_1 = V_total/mass_water; % m^3/kg
+
+%% System of equations
+% unknowns: T_1
+
+Energy = @(T) mass_water*(water.u_Tv(T,v_water_1) - u_water_0) + ...
+    mass_air*(air.u_Tv(T,v_air_1) - u_air_0) - Q_total;
+
+T_1 = fzero(Energy,0.5*(To_containment + To_primary));
+fprintf('Final system temperature = %g degrees C\n',T_1);
+
+%% Determine final system pressure (no IRWST, no core make-up tanks)
+P1_water = water.P_vT(v_water_1,T_1);
+P1_air = air.P_vT(v_air_1,T_1);
+
+P1_total = P1_water + P1_air;
+
+% get final water quality
+x_1 = water.x_pu(P1_water,water.u_Tv(T_1,v_water_1));
+fprintf('Final water quality = %g \n',x_1);
+
+fprintf('Partial pressure of water = %g kPa \n',P1_water);
+fprintf('Partial pressure of air = %g kPa \n',P1_air);
+fprintf('Total pressure = %g kPa \n',P1_total);
+
+\end{lstlisting}
+
+
+\section{LOCA analysis with humid air}
+
+\begin{lstlisting}
+%% Todreas Example 7.1 Solution
+clear
+clc
+close 'all'
+
+EasyProp_path = ' '; %<- Path if EasyProp.py is in your current directory
+if count(py.sys.path,EasyProp_path) == 0  % <-- see if desired directory is on path
+    insert(py.sys.path,int32(0),EasyProp_path); %<-- if not; add it.
+end
+
+
+%% establish air and water objects
+
+units = 'SI';
+water = py.EasyProp.simpleFluid('Water',units);
+air = py.EasyProp.simpleFluid('Air',units);
+humidAir = py.EasyProp.HumidAir(units);
+
+%% set initial temperature, pressure, and volumes
+V_primary = 354; % m^3, given
+V_containment = 50970; % m^3, given
+V_total = V_primary + V_containment; % m^3
+
+rel_humidity = 0.8;
+
+Po_primary = 15500; % kPa, initial primary pressure, given
+To_primary = 344.75; % C, initial primary temperature, given
+
+Po_containment_total = 101; % kPa 
+
+
+To_containment = 26.85; % C, initial containment temperature, given
+
+Pw_1 = rel_humidity*water.Psat_T(To_containment); % kPa (Step 1, pg 331 )
+% resulting Pw_1 is slightly higher than the value given in the text
+
+Po_containment = Po_containment_total - Pw_1; % kPa, initial containment pressure
+% ^^ Step 2 on page 332.
+
+Q_total = 0; % kJ, total net energy exchange in/out of the containment during the transient.
+
+%% compute the mass of air and water
+
+rho_a_0 = 1./air.v_pT(Po_containment,To_containment); % kg/m^3
+mass_air = V_containment*rho_a_0; % kg
+
+% get humidity ratio for temperature, pressure and relative humidity
+w = humidAir.w_PTR(Po_containment,To_containment,rel_humidity); % use humidAir object
+mass_water_in_air = w*mass_air; %<-- this is from step 3.  humidAir gives a slightly higher result
+
+rho_w_0 = 1./water.v_pT(Po_primary,To_primary); % kg/m^3
+mass_water = V_primary*rho_w_0 + mass_water_in_air; % kg water in air and primary  
+
+%% compute specific internal energy
+
+u_air_0 = air.u_pT(Po_containment,To_containment); %kJ/kg
+u_water_0 = water.u_pT(Po_primary,To_primary); % kJ/kg
+
+%% set up system of equations to solve for the final state.
+
+v_air_1 = V_total/mass_air; % m^3/kg 
+v_water_1 = V_total/mass_water; % m^3/kg
+
+%% System of equations
+% unknowns: T_1
+
+Energy = @(T) mass_water*(water.u_Tv(T,v_water_1) - u_water_0) + ...
+    mass_air*(air.u_Tv(T,v_air_1) - u_air_0) - Q_total;
+
+T_1 = fzero(Energy,0.5*(To_containment + To_primary));
+fprintf('Final system temperature = %g degrees C\n',T_1);
+
+
+
+%% Determine final system pressure (no IRWST, no core make-up tanks)
+P1_water = water.P_vT(v_water_1,T_1);
+P1_air = air.P_vT(v_air_1,T_1);
+
+P1_total = P1_water + P1_air;
+
+% get final water quality
+x_1 = water.x_pu(P1_water,water.u_Tv(T_1,v_water_1));
+fprintf('Final water quality = %g \n',x_1);
+
+fprintf('Partial pressure of water = %g kPa \n',P1_water);
+fprintf('Partial pressure of air = %g kPa \n',P1_air);
+fprintf('Total pressure = %g kPa \n',P1_total);
+
+
+\end{lstlisting}
+
+\end{fullwidth}

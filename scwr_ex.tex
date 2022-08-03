@@ -1,0 +1,374 @@
+\chapter{Example - Supercritical Water Reactor Analysis}
+\label{app:SCWR_ex}
+\index{supercritical water reactor}
+
+To run this code, create a MATLAB script containing the code in the listing below.  You should have a copy of the library EasyProp.py in the same folder.
+
+\begin{fullwidth}
+\begin{lstlisting}
+%% SCWR Example Analysis
+%% Prepare the environment
+clear
+clc
+close 'all'
+
+%% Add current directory to the Python Path
+EasyProp_path = ' '; %<- Path if EasyProp.py is in your current directory
+if count(py.sys.path,EasyProp_path) == 0  % <-- see if desired directory is on path
+    insert(py.sys.path,int32(0),EasyProp_path); %<-- if not; add it.
+end
+
+%% Initialize Fluid Property object
+fluid = 'Water';
+units = 'SI';
+water = py.EasyProp.EasyProp(fluid,units);
+
+%% Initialize State Point Data Arrays
+
+numSP = 25;
+h = nan(numSP,1);
+h_s = nan(numSP,1);
+s = nan(numSP,1);
+s_s = nan(numSP,1);
+T = nan(numSP,1);
+P = nan(numSP,1);
+x = nan(numSP,1);
+ef = nan(numSP,1);
+
+%% Set parameter values from given data
+Pmax = 24000; % kPa, reactor outlet pressure
+Pm1 = 8900; % kPa, outlet pressure HP1
+Pm2 = 6000; % kPa, outlet pressure HP2
+Pm3 = 1000; % kPa, outlet pressure HP3
+Pm4 = 200; % kPa, outlet pressure LP1
+Pm5 = 4; % kPa, outlet pressure LP2
+
+eta_t = 0.9;
+eta_p = 0.88;
+
+To_C = 16;
+To = 16+273; % K, dead state temperature
+Po = 101; % kPa, dead state pressure
+
+ho = water.h_pT(Po,To_C);
+so = water.s_pT(Po,To_C);
+
+% function for specific flow exergy neglecting kinetic and potential energy
+ef_fun = @(h_val,s_val) h_val - ho - To*(s_val - so);
+
+%% Calculate Thermodynamic Properties of State Points
+
+% state point 1 - condenser outlet, hotwell pump input
+P(1) = Pm5;
+x(1) = 0.0;
+T(1) = water.Tsat_p(P(1));
+s(1) = water.sL_p(P(1));
+h(1) = water.hL_p(P(1));
+ef(1)= ef_fun(h(1),s(1));
+
+% state point 2 - hotwell pump outlet / OFWH inlet
+P(2) = Pm4;
+s_s(2) = s(1);
+h_s(2) = water.h_ps(P(2),s_s(2));
+h(2) = h(1) - (h(1) - h_s(2))./eta_p;
+s(2) = water.s_ph(P(2),h(2));
+T(2) = water.T_ph(P(2),h(2));
+ef(2) = ef_fun(h(2),s(2));
+
+% state point 3 - OFWH outlet
+P(3) = Pm4;
+x(3) = 0.0;
+h(3) = water.hL_p(P(3));
+T(3) = water.Tsat_p(P(2));
+s(3) = water.sL_p(P(3));
+ef(3) = ef_fun(h(3),s(3));
+
+% state point 4 - CBP outlet
+P(4) = Pm1;
+s_s(4) = s(3);
+h_s(4) = water.h_ps(P(4),s_s(4));
+h(4) = h(3) - (h(3) - h_s(4))./eta_p;
+s(4) = water.s_ph(P(4),h(4));
+T(4) = water.T_ph(P(4),h(4));
+ef(4) = ef_fun(h(4),s(4));
+
+% state point 5 - outlet from mixing point / entry to CFWH 2
+P(5) = P(4);
+% remainder waits until after non-linear solver
+
+% Skip to reactor outlet so I can get turbine exhaust conditions for CFWHs
+% state point 9 - reactor outlet, HP1 inlet
+P(9) = Pmax;
+T(9) = 550; % C, reactor outlet temp (given) %-- note: "saturation temperature" doesn't make sense here.
+h(9) = water.h_pT(P(9),T(9));
+s(9) = water.s_pT(P(9),T(9));
+ef(9) = ef_fun(h(9),s(9));
+
+% state point 10 - HP1 outlet, 
+P(10) = Pm1;
+s_s(10) = s(9);
+h_s(10) = water.h_ps(P(10),s_s(10));
+h(10) = h(9) - (h(9) - h_s(10))*eta_t;
+s(10) = water.s_ph(P(10),h(10));
+T(10) = water.T_ph(P(10),h(10)); %<-- a little superheated (good!!)
+tsat1 = water.Tsat_p(P(10)); 
+ef(10) = ef_fun(h(10),s(10));
+
+% state point 11 - HP2 outlet, HP3 inlet
+P(11) = Pm2;
+s_s(11) = s(10);
+h_s(11) = water.h_ps(P(11),s_s(11));
+h(11) = h(10) - (h(10) - h_s(11))*eta_t;
+s(11) = water.s_ph(P(11),h(11));
+T(11) = water.T_ph(P(11),h(11));
+tsat2 = water.Tsat_p(P(11)); %<-- again, superheated
+ef(11) = ef_fun(h(11),s(11));
+
+% state point 12 - HP3 outlet, M/S inlet
+P(12) = Pm3;
+s_s(12) = s(11);
+h_s(12) = water.h_ps(P(12),s_s(12));
+h(12) = h(11) - (h(11) - h_s(12))*eta_t;
+s(12) = water.s_ph(P(12),h(12));
+x(12) = water.x_ph(P(12),h(12));
+T(12) = water.T_ph(P(12),h(12));
+ef(12) = ef_fun(h(12),s(12));
+
+% state point 13 - M/S outlet, LP1 inlet
+P(13) = P(12);
+x(13) = 1.0;
+h(13) = water.hV_p(P(13));
+s(13) = water.sV_p(P(13));
+T(13) = water.T_ph(P(13),h(13));
+ef(13) = ef_fun(h(13),s(13));
+
+
+% state point 14 - LP1 outlet , MS2 inlet
+P(14) = Pm4;
+s_s(14) = s(13);
+h_s(14) = water.h_ps(P(14),s_s(14));
+h(14) = h(13) - (h(13) - h_s(14))*eta_t;
+s(14) = water.s_ph(P(14),h(14));
+T(14) = water.T_ph(P(14),h(14));
+x(14) = water.x_ph(P(14),h(14));
+ef(14) = ef_fun(h(14),s(14));
+
+% state point 15 - MS2 outlet, LP2 inlet
+P(15) = P(14);
+x(15) = 1.0;
+s(15) = water.sV_p(P(15));
+h(15) = water.hV_p(P(15));
+T(15) = water.T_ph(P(15),h(15));
+ef(15) = ef_fun(h(15),s(15));
+
+% state point 16 - LP2 outlet, condenser inlet
+P(16) = Pm5;
+s_s(16) = s(15);
+h_s(16) = water.h_ps(P(16),s_s(16));
+h(16) = h(15) - (h(15) - h_s(16))*eta_t;
+s(16) = water.s_ph(P(16),h(16));
+x(16) = water.x_ph(P(16),h(16));
+T(16) = water.T_ph(P(16),h(16));
+ef(16) = ef_fun(h(16),s(16));
+
+% state point 17 - MS1 liquid drain
+P(17) = P(12);
+x(17) = 0.0;
+h(17) = water.hL_p(P(17));
+s(17) = water.sL_p(P(17));
+T(17) = water.T_ph(P(17),h(17));
+ef(17) = ef_fun(h(17),s(17));
+
+% state point 18 - Trap 2 outlet
+P(18) = P(2);
+h(18) = h(17); % isenthalpic
+s(18) = water.s_ph(P(18),h(18));
+T(18) = water.T_ph(P(18),h(18));
+ef(18) = ef_fun(h(18),s(18));
+
+% state point 19 - M/S #2 liquid drain
+P(19) = P(14);
+x(19) = 0.0;
+h(19) = water.hL_p(P(19));
+s(19) = water.sL_p(P(19));
+T(19) = water.T_ph(P(19),h(19));
+ef(19) = ef_fun(h(19),s(19));
+
+% state point 20 - CFWH #1 drain / trap 1 inlet
+P(20) = P(10);
+T(20) = water.Tsat_p(P(20));
+h(20) = water.hL_p(P(20));
+s(20) = water.sL_p(P(20));
+ef(20) = ef_fun(h(20),s(20));
+
+% state point 21 - trap 1 outlet
+P(21) = P(11);
+h(21) = h(20); % isenthalpic
+s(21) = water.s_ph(P(21),h(21));
+T(21) = water.T_ph(P(21),h(21));
+ef(21) = ef_fun(h(21),s(21));
+
+% state point 22 - CFWH #2 drain, DBP suction
+P(22) = P(11);
+h(22) = water.hL_p(P(22));
+s(22) = water.s_ph(P(22),h(22));
+T(22) = water.T_ph(P(22),h(22));
+ef(22) = ef_fun(h(22),s(22));
+
+% state point 23 - dbp discharge
+P(23) = P(4);
+s_s(23) = s(22);
+h_s(23) = water.h_ps(P(23),s_s(23));
+h(23) = h(22) - (h(22) - h_s(23))./eta_p;
+s(23) = water.s_ph(P(23),h(23));
+T(23) = water.T_ph(P(23),h(23));
+ef(23) = ef_fun(h(23),s(23));
+
+% state point 24 - condenser cooling water inlet
+P(24) = Po;
+T(24) = To_C;
+h(24) = water.h_pT(P(24),T(24));
+s(24) = water.s_pT(P(24),T(24));
+ef(24) = ef_fun(h(24),s(24));
+
+% state point 25 - condenser cooling water outlet
+P(25) = Po;
+T(25) = 27;
+h(25) = water.h_pT(P(25),T(25));
+s(25) = water.s_pT(P(25),T(25));
+ef(25) = ef_fun(h(25),s(25));
+
+% state point 6 - CFWH 2 outlet / main feedwater pump inlet
+P(6) = P(5);
+T(6) = 230; % C, given.
+h(6) = water.h_pT(P(6),T(6));
+s(6) = water.s_pT(P(6),T(6));
+ef(6) = ef_fun(h(6),s(6));
+
+% state point 7 - MFWP outlet / CFWH 1 inlet
+P(7) = Pmax;
+s_s(7) = s(6);
+h_s(7) = water.h_ps(P(7),s_s(7));
+h(7) = h(6) - (h(6) - h_s(7))./eta_p;
+s(7) = water.s_ph(P(7),h(7));
+ef(7) = ef_fun(h(7),s(7));
+T(7) = water.T_ph(P(7),h(7));
+
+% state point 8 - CFWH1 outlet Rx inlet
+P(8) = P(7);
+T(8) = water.Tsat_p(Pm1); 
+h(8) = water.h_pT(P(8),T(8));
+s(8) = water.s_pT(P(8),T(8));
+ef(8) = ef_fun(h(8),s(8));
+
+
+%% Energy Balances and unknown calculation
+
+% unknowns: f = [f1,f2,f3,h5]
+OFWH_hb = @(f) (1-f(1))*(1-f(2))*x(12)*x(14)*(1-f(3))*h(2) + ...
+    (1-f(1))*(1-f(2))*x(12)*x(14)*f(3)*h(15) + ...
+    (1-f(1))*(1-f(2))*x(12)*(1-x(14))*h(19) + ...
+    (1-f(1))*(1-f(2))*(1-x(12))*h(18) - ...
+    (1-(f(1)+(1-f(1))*f(2)))*h(3);
+
+MP1_hb = @(f) (1-(f(1)+(1-f(1))*f(2)))*h(4) + ...
+    (f(1)+(1-f(1))*f(2))*h(23) - ...
+    f(4); %<-- remember, f(4) = h(5)
+
+CFWH2_hb = @(f) f(4)+ (1-f(1))*f(2)*h(11) + f(1)*h(21) - ...
+    (f(1)+(1-f(1))*f(2))*h(22) - h(6);
+
+CFWH1_hb = @(f) f(1)*h(10) + h(7) - f(1)*h(20) - h(8);
+    
+ balance = @(f) abs(OFWH_hb(f))+abs(MP1_hb(f))+abs(CFWH2_hb(f))+...
+     abs(CFWH1_hb(f));
+ 
+% % provide inputs to fmincon to solve non-linear equations
+x0 = [0.5 0.5 0.5 h(4)];
+A = []; % no linear inequality constraints
+b = [];
+Aeq = []; % no linear equality constraints
+beq = [];
+lb = [0 0 0 h(1)]; % all values must be non-negative
+ub = [1 1 1 h(6)]; % flow fraction limited to 1
+nlcon = [];
+options = optimoptions('fmincon','Display','iter','Algorithm','sqp',...
+    'StepTolerance',1e-14,'MaxFunctionEvaluations',1000);
+
+[f,fval,exitflag] = fmincon(balance,x0,A,b,Aeq,beq,lb,ub,nlcon,options);
+% 
+% % unpack and report the results
+fprintf('balance function value at convergence: %g kJ/kg \n',fval);
+fprintf('Flow fraction to CFWH1: %g \n',f(1));
+fprintf('Flow fraction to CFWH2: %g \n',f(2));
+fprintf('Flow fraction to OFWH: %g \n',f(3));
+h(5) = f(4);
+fprintf('Enthalpy of flow into CFWH2: %g kJ/kg \n',h(5));
+
+% finish state point 5:
+T(5) = water.T_ph(P(5),h(5));
+s(5) = water.s_ph(P(5),h(5));
+ef(5) = ef_fun(h(5),s(5));
+
+% display state point data neatly
+SP = {'1','2','3','4','5','6','7','8','9','10','11','12',...
+    '13','14','15','16','17','18','19','20','21','22','23','24','25'};
+SP_table = table(P,T,h,s,x,ef,'RowName',SP);
+disp(SP_table);
+
+%% First-law Analysis results
+
+% pumps:
+w_hwp = (h(1)-h(2))*(1-f(1))*(1-f(2))*x(12)*x(14)*(1-f(3));
+fprintf('Specific work Hotwell Pump: %g kJ/kg \n',w_hwp);
+
+w_cbp = (h(3)-h(4))*(1-(f(1)+(1-f(1))*f(2)));
+fprintf('Specific work Condensate Booster Pump: %g kJ/kg \n',w_cbp);
+
+w_dbp = (h(22)-h(23))*(f(1)+(1-f(1))*f(2));
+fprintf('Specific work Drain Booster Pump: %g kJ/kg \n',w_dbp);
+
+w_mfp = h(6) - h(7);
+fprintf('Specific work main feed pump: %g kJ/kg \n',w_mfp);
+
+w_p = w_hwp + w_cbp + w_dbp + w_mfp;
+
+% turbines:
+w_hp1 = h(9)-h(10);
+fprintf('Specific work HP1: %g kJ/kg \n',w_hp1);
+
+w_hp2 = (h(10)-h(11))*(1-f(1));
+fprintf('Specific work HP2: %g kJ/kg \n',w_hp2);
+
+w_hp3 = (h(11)-h(12))*(1-f(1))*(1-f(2));
+fprintf('Specific work HP3: %g kJ/kg \n',w_hp3);
+
+w_lp1 = (h(13)-h(14))*(1-f(1))*(1-f(2))*x(12);
+fprintf('Specific work LP1: %g kJ/kg \n',w_lp1);
+
+w_lp2 = (h(15)-h(16))*(1-f(1))*(1-f(2))*x(12)*x(14)*(1-f(3));
+fprintf('Specific work LP2: %g kJ/kg \n',w_lp2);
+
+w_t = w_hp1 + w_hp2 + w_hp3 + w_lp1 + w_lp2;
+
+w_net = w_p + w_t;
+
+fprintf('Net specific work: %g kJ/kg \n',w_net);
+
+% heat supplied
+q_s = h(9) - h(8);
+
+% heat rejected
+q_r = (h(1)-h(16))*(1-f(1))*(1-f(2))*x(12)*x(14)*(1-f(3));
+
+q_net = q_s+q_r;
+fprintf('Net specific heat: %g kJ/kg \n',q_net);
+
+eta_th = w_net/q_s;
+fprintf('Thermal efficiency: %5.2f percent \n',eta_th*100);
+
+
+\end{lstlisting}
+\end{fullwidth}
+
+

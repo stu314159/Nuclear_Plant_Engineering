@@ -1,0 +1,65 @@
+\chapter{Assignment \#4: Brayton Cycle Analysis}
+\label{ch:ass4}
+
+\begin{fullwidth}
+\newthought{Use EasyProp} and MATLAB to analyze the following problems:
+
+\begin{enumerate}
+\item Air enters a simple open Brayton cycle at 14.7 psia and 85$^{\circ}$F.  Compressor pressure ratio is 5 and the isentropic efficiency of the compressor is 85\%.  Helium coolant from a Very High Temperature Reactor (VHTR) supplies heat to the air in a heat exchanger so that the inlet temperature to the turbine in the Brayton cycle is 1200$^{\circ}$F.  The turbine isentropic efficiency is 90\%.  Air exiting the turbine is discharged to the atmosphere at 14.7 psia.  Calculate:
+\begin{enumerate}
+\item Net specific work. [BTU/lb$_\text{m}$]
+\item Thermal efficiency.
+\item Mass flow rate needed for $5 \times 10^6$ BTU/hr power output. [lb$_\text{m}$/s]
+\end{enumerate}
+
+\vspace{1.0cm}
+
+\item Consider the cycle described in Problem \#1.  While maintaining constant maximum and minimum temperature of 85$^{\circ}$F and 1200$^{\circ}$F respectively, constant isentropic efficiency of the compressor and turbine of 85\% and 90\% respectively, vary the compressor pressure ratio between 2 and 15.
+\begin{enumerate}
+\item Make plots of thermal efficiency and net specific work over that range of compressor pressure ratio.
+\item Determine the pressure ratio for maximum thermal efficiency.
+\item Determine the pressure ratio for maximum net work.
+\end{enumerate}
+Briefly explain your results in a short paragraph of approximately 250 - 500 words.
+
+\vspace{1.0cm}
+
+\item Consider again the cycle described in Problem \#1.  Instead of discharging the turbine exhaust directly to atmosphere, direct the turbine exhaust to a regenerator.  Turbine exhaust gases preheat the air discharged from the compressor prior to having heat added by the VHTR coolant.  Assume the regenerator effectiveness is 85\%.
+\begin{enumerate}
+\item Create a simple schematic of your cycle; label all state point numbers.
+\item Calculate net specific work for the cycle. [BTU/lb$_{\text{m}}$]
+\item Calculate the thermal efficiency of the cycle.
+\end{enumerate}
+
+\vspace{1.0cm}
+
+\item Consider the cycle you have created for Problem \#3.  Study the performance as regenerator effectiveness is varied from 0\% to 100\%; make a plot of thermal efficiency versus regenerator effectiveness.  Briefly comment on your results (250 - 300 words) and verify that your results make sense.
+
+\vspace{1.0cm}
+
+\item Consider again the cycle described in Problem \#1.  Incorporate two-stage compression with an inter-cooler between stages.  Assume that the working fluid is cooled to 85$^{\circ}$F (at constant pressure) before entering the second compressor.  Consider three different cases for the pressure ratios of the two compressors:
+\begin{enumerate}
+\item Both compressors have the same compressor pressure ratio $(r_{p,1} = r_{p,2} = \sqrt{5})$.
+\item $r_{p,1}=1.5$, $r_{p,2}= \sfrac{5}{1.5}$.
+\item $r_{p,1} = \sfrac{5}{1.5}$, $r_{p,2}=1.5$.
+\end{enumerate}
+Calculate compressor work and thermal efficiency for each case.  Briefly comment on  your results. (\textbf{Note:} you need not do a second-law analysis on this cycle so there is no need to try and compute the state of the fluid that serves as the heat sink in the inter-cooler.)
+
+\vspace{1.0cm}
+
+\item Consider a Brayton cycle with inter-cooling, regeneration, and reheat.  Air enters the cycle at 14.7 psia, 85$^{\circ}$F.  Two stages of compressors are used, each with equal compressor pressure ratio, so that the overall pressure ratio is 5.  A regenerator is used with a regenerator effectiveness of 80\%.  After heat is added to a maximum temperature of 1200$^{\circ}$F, two turbines are used with re-heating between the two stages; the reheat procss is isobaric and the air temperature out of the reheater is 1200$^{\circ}$F.  Assume there are no hydraulic pressure losses within system components.  \textbf{Note:} As with the last problem, you need not evaluate state point properties of the helium coolant from the VHTR, nor need you analyze the state point properties for the heat sink of the inter-cooler.
+\begin{enumerate}
+\item Make a simple sketch of your system, being sure to identify all state points.
+\item Vary the expansion ratio of the turbines as follows:
+\begin{enumerate}
+\item $r_{e,1} = r_{e,2} = \sqrt{5}$
+\item $r_{e,1} = 1.5$, $r_{e,2} = \sfrac{5}{1.5}$
+\item $r_{e,1} = \sfrac{5}{1.5}$, $r_{e,2} = 1.5$
+\end{enumerate}
+Calcualte net specific work and thermal efficiency for all three cases.  Briefly comment on your results (250 - 500 words).
+\end{enumerate}
+
+\end{enumerate}
+
+
+\end{fullwidth}

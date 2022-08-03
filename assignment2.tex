@@ -1,0 +1,79 @@
+\chapter{Assignment \#2: Rankine Cycle 2nd Law Analysis}
+\label{ch:ass2}
+
+\section{Background}
+Russia has recently placed a nuclear powered barge into operation named the \emph{Akademik Lomonosov.}  This vessel is not self-propelled but is equipped with two pressurized water reactors designated as KLT-40S for providing up to 35 MW of electrical power (each).
+
+We will model the power conversion system for the KLT-40S as a simple Rankine Cycle with a Steam Generator (SG), a Turbine Generator (TG), a condenser and a main feed pump (MFP).  Thermal energy is supplied by primary coolant of a pressurized water reactor (PWR); waste heat is rejected to seawater which is modeled as ordinary water.  Relevant design parameters are given in Table \ref{tab:ass2}
+\begin{table}
+\begin{tabular}{l c}
+\toprule
+Parameter & Value \\
+\midrule
+Primary coolant pressure & 12.7 MPa \\
+Primary coolant SG inlet temperature & 317$^{\circ}$C \\
+Primary coolant SG outlet temperature & 280$^{\circ}$C \\
+SG pressure & 3.8 MPa \\
+SG steam outlet temperature & 290$^{\circ}$C \\
+Steam mass flow rate & 67 kg/s \\
+Dead state temperature and pressure & 5$^{\circ}$C, 101 kPa \\
+Condenser pressure & 5 kPa\\
+Consenser seawater inlet temperature & 5$^{\circ}$C \\
+Seawater cooling temperature rise & 10$^{\circ}$C \\
+MFP isentropic efficiency & 65\% \\
+TG steam outlet quality & 80\% \\
+\bottomrule
+\end{tabular}
+\caption{\emph{Akademic Lomonosov} Nuclear Steam Supply System key parameters.}
+\label{tab:ass2}
+\end{table}
+
+\newthought{Analyze the }Rankine cycle described and answer the following questions:
+\begin{fullwidth}
+\begin{enumerate}
+\item What is the isentropic efficiency of the TG?
+\vspace{1.0cm}
+\item What is the net specific work of the Rankine cycle? [kJ/kg]
+\vspace{1.0cm}
+\item Verify that the net specific heat is the same as the net specific work.
+\vspace{1.0cm}
+\item What is the mass flow rate of the primary coolant? [kg/s]
+\vspace{1.0cm}
+\item What is the mass flow rate of the condenser cooling water? [kg/s]
+\vspace{1.0cm}
+\item What is the rate of exergy input (to the Rankine cycle) from the primary coolant? [kW]
+\vspace{1.0cm}
+\item What is the rate of exergy rejection to the environment via condenser cooling water? [kW]
+\vspace{1.0cm}
+\item Compute the rate of exergy destruction in the Rankine cycle components; fill in the table below:
+\begin{table}
+\begin{tabular}{l | l}
+\toprule
+\textbf{Component} & \textbf{Rate of Exergy Destruction [kW]} \\
+\hline
+Steam generator &  \\
+\hline
+Turbine generator & \\
+\hline
+Condenser & \\
+\hline
+Main feed pump & \\
+\hline
+\hline
+Total Exergy Destruction Rate & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{1.0cm} 
+
+\item What is the rate of exergy transfer through work? [kW]
+
+\vspace{1.0cm}
+
+\item Verify the 2nd law of thermodynamic balance:
+$$\text{Exergy in - Exergy out } = \dot{W} + \dot{E}_{d}$$
+
+
+\end{enumerate}
+\end{fullwidth}

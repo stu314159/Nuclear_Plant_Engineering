@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rm -rf *.ps *.log *.pdf *.dvi *.aux *.*% *.lof *.lop *.lot *.toc *.idx *.ilg *.ind *.bbl *blg *.out *.*~ *~

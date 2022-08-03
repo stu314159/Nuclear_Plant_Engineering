@@ -1,0 +1,104 @@
+\chapter{Lecture 6 - Solving Multi-Variable Non-linear Equations in MATLAB}
+\label{ch:ch6}
+\section{Objectives}
+The objectives of this lecture are:
+\begin{itemize}
+\item Describe the types of multi-variable non-linear equations that arise in analyzing complex thermodynamic cycles; and
+\item Describe in detail how to use the built-in MATLAB function FMINCON
+\end{itemize}
+
+\section{Multi-variable Non-linear Equation}
+In the last lecture, we analyzed a Rankine cycle with a moisture separator, re-heater, and an open feedwater heat exchanger.  In performing the analysis of the cycle, we arrived a two non-linear equations expressing conservation of energy for the re-heater and the open feedwater heater.  
+
+For the OFWH:\marginnote{\textbf{Note: } For this example, assume that all state point property values and mass flow rates such as $h$, $x$, and $\dot{m}_s$ are known.
+
+This will be the case for most cycles you analyze; you will be given enough information to find most/all state point properties but you will need to solve the non-linear equations to get the flow rates.}
+\begin{multline}
+\dot{m}_s h(3) = \dot{m}_s [(1-f(1))(1-x(6))h(12) + (1-f(1))x(6)f(2)h(7) + \dots \\
+ f(1)h(11) + (1-f(1))(x(6))(1-f(2))h(2) ] 
+\label{eq:Ebal_OFWH1}
+\end{multline}
+
+For the re-heater:
+\begin{equation}
+\dot{m}_s(1-f(1))x(6)(1-f(2))(h(8)-h(7)) = \dot{m}_s f(1)(h(5)-h(10))
+\label{eq:Ebal_RH1}
+\end{equation}
+
+\newthought{These equations will be} presented in MATLAB format to facilitate the discussion.  As the equations are re-written in MATLAB form, we will also re-formulate the equations so they are amenable to solution with a tool like FMINCON.  Specifically, we will put all terms of the equation on one side.
+
+\begin{minipage}{\linewidth} 
+\begin{lstlisting}[caption=Energy balance equations in MATLAB format]
+% f = [f1,f2]
+OFWH_heatBalance = @(f) (1-f(1))*(1-f(2))*x(6)*(h2) + ...
+f(1)*h(11) + (1-f(1))*x(6)*f(2)*h(7) + ...
+(1-f(1))*(1-x(6))*h(12) - h(3);
+
+ReHeater_heatBalance = @(f) f(1)*h(5) + ...
+(1-f(1))*x(6)*(1-f(2))*h(7) - ...
+( f(1)*h(10) + (1-f(1))*x(6)*(1-f(2))*h(8) );
+\end{lstlisting}
+\end{minipage}
+Now we have two in-line functions that, given the correct values for $f_1$ and $f_2$, will be equal to zero.  We have re-cast our problem into a ``root-finding'' problem; one that many computational tools have been developed to solve.
+
+\newthought{The way} we are going to solve this is using the built-in MATLAB function FMINCON.  FMINCON is a function for solving a constrained minimization problem for a non-linear function with multiple variables.  FMINCON expects only one equation to solve, so we will need to combine the 2 equations above into a single equation.  We will do this as follows:
+
+\begin{lstlisting}[caption=Combine two heat balace equations into one.]
+balance = @(f) abs(OFWH_heatBalance(f)) + ...
+abs(ReHeater_heatBalance(f));
+\end{lstlisting}
+We want to find the values of $f(1)$ and $f(2)$ such that ``balance'' is minimized.  It should be clear that:
+\begin{enumerate}
+\item minimum possible value of ``balance'' is zero; and
+\item ``balance = 0'' corresponds to satisfying both of the energy conservation equations for the OFWH and the RH.\sidenote[][-1.75cm]{This is only true because we use the absolute value function on each heat balance equation individually.  If we omitted the absolute value function then the minimization algorithm would drive the balance function towards negative infinity; if we used the absolute value function on the sum of the functions then positive errors for the OFWH could be offset by negative errors for the re-heater.}
+\item We need to find this minimum value while constraining $f(1)$ and $f(2)$ to the interval $[0,1]$.\sidenote[][0.25cm]{Referencing the schematic from the previous lecture, $f(1)$ is the fraction of steam drawn off for re-heat and $f(2)$ is the fraction of steam flowing out of the moisture separator extracted and sent to the OFWH.  Since both are defined as flow fractions, they cannot be negative and they cannot be greater than 1, corresponding to 100 percent.}
+\end{enumerate}
+
+\newthought{The MATLAB function FMINCON} attempts to find a constrained minimum of a function of several variables. The function signature is:
+
+\begin{lstlisting}
+X = fmincon(FUN,X0,A,B,Aeq,Beq,LB,UB,NONLCON,OPTIONS);
+\end{lstlisting}
+
+The arguments for FMINCON are as follows:
+\begin{itemize}
+\item FUN: this is the function that you hope to minimize; as illustrated here, this is the function ``balance.''
+\item X0: this is a vector providing the initial guess for each variable in the function.  For this example X0 must have two entries, one for the initial guess for $f(1)$ and $f(2)$.  A reasonable value for X0 in this case would be: [0.5 0.5]
+\item A and B.  These arguments allow the user to express linear inequality constraints between the non-linear variables.  The inequalities are expressed as: $AX \le B$ so if, for example, we want to enforce an inequality such as $f(1) > f(2)$, this could be written mathematically as $-f(1)+f(2) \le 0$; we would set A = [-1,1]; and B = [0].  For the example we are using for this lecture, no such inequality constraint exists so we would set A = [] and B = [].  
+\item Aeq and Beq.  This is the same as above but are equality constraints instead of inequality constraints.  If, for example, we want to enforce the constraint that $f(1) + f(2) = 1$, we would set A = [1,1] and B = [1]. For this problem we have no such constraints so we should set Aeq = [] and Beq = [].
+
+\item LB and UB: these arguments are where you provide the lower bound and upper bound for each of your variables.  For multi-variable problems, these should be entered as vectors.
+
+\item NLCON: this argument allows for you to provide non-linear constraints between the dependent variables.  We will not be using this functionality and set this argument to NLCON = [].
+\item OPTIONS.  This argument allows you to provide keyword-value pairs for various options.  The argument must have a specific form and is most easily set using another built-in function ``optimoptions''.  Use of this feature will be illustrated in the next code listing.
+\end{itemize}
+
+Using this information, we can provide values for the function arguments and find the constrained minimum for our equations as follows:
+
+\begin{lstlisting}[caption=Set arguments and call FMINCON to find constrained minimum]
+x0 = [0.5 0.5]; % a reasonable guess within the lower and upper bounds of the variables
+A = [];  % no linear inequality constraints
+B = [];
+Aeq = []; % no linear equality constraints
+Beq = [];
+lb = [0 0];
+ub = [1 1];
+nlcon = []; % no nonlinear constraints
+options = optimoptions('fmincon','Display','none'); % suppress extensive output
+% other commonly used option sets:
+% options = optimoptions('fmincon','Display','iter');
+% options = optimoptions('fmincon','Algorithm','sqp');
+% select constrained minimization algorithm.  Default is 'interior-point'
+% other options: 'sqp','sqp-legacy','active'set',
+% and 'trust-region-reflective'.  See documentation.
+%
+
+[f,fval,exitflag] = fmincon(balance,x0,A,B,Aeq,Beq,lb,ub,nlcon,options);
+
+% report the results
+fprintf('Flow fraction for reheat steam = %5.4f \n',f(1));
+fprintf('Flow fraction to OFWH from M/S exit = %5.4f \n',f(2));
+\end{lstlisting}
+
+  
+

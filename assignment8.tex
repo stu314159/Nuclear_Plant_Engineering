@@ -1,0 +1,170 @@
+\chapter{Assignment \#8: Convective Heat Transfer}
+\label{ch:ass8}
+
+
+\begin{fullwidth}
+A lead-cooled fast reactor with Supercritical Carbon Dioxide (S-CO$_2$) Brayton Cycle for energy conversion has been proposed for a transportable small modular reactor design.  In order to transfer the thermal energy of the reactor to the S-CO$_2$ power conversion cycle, an intermediate heat exchanger (IHX) has been proposed.  S-CO$_2$ will flow on the inside of the IHX tubes and liquid lead will flow over the outside.  The convective heat transfer coefficient of liquid lead is an order of magnitude higher than that of S-CO$_2$.  To compensate, the inside of the IHX tubes will be augmented with helical grooves.  The goal of this workshop-style assignement is to compare the thermal and hydraulic consequence of these helical grooves.
+
+\newthought{Relevant design} information is provided in the table below:
+
+\begin{table}
+\begin{tabular}{l | l}
+\toprule
+\textbf{Basic Thermal Data} & \\
+\hline
+Thermal Power & 300 MW \\
+$\dot{m}_{\text{lead}}$ & 21,700 kg/s \\
+$\dot{m}_{\text{S-CO}_2}$ & 1,594 kg/s \\
+$T_{\text{in,lead}}$ & 600$^{\circ}$C \\
+$T_{\text{out,lead}}$ & 503$^{\circ}$C \\
+$T_{\text{in,S-CO}_2}$ & 397$^{\circ}$C \\
+$T_{\text{out,S-CO}_2}$ & 550$^{\circ}$C \\
+Pressure S-CO$_2$ & 19.7 MPa \\
+   & \\
+\textbf{IHX tube data} & \\
+\hline
+Number of Tubes & 10,000 \\
+Outer tube diameter & 2 cm \\
+Inner tube diameter & 1.6 cm \\
+Pitch-to-diameter ratio & 1.25 \\
+Lattice type & Hexagonal \\
+Tube wall thermal conductivity & 0.026 kW/m-$^{\circ}$C\\
+  & \\
+\textbf{Helical rib specification} & \\
+Rib height - e & 0.35 mm \\
+Helix angle - $\alpha$ & 27 degrees \\
+Contact angle profile - $\beta$ & 90 degrees \\
+Rib separation - p or $\delta$	& 0.02 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\newthought{Thermal property} data is provided in the following table:
+\begin{table}
+\begin{tabular}{l | c | c}
+\toprule
+  &  \textbf{Lead} & \textbf{S-CO$_2$} \\
+\hline
+Average temperature ($^{\circ}$C) & 551.5 & 473.5 \\
+Average density (kg/m$^3$) & 10,382 & 136.6 \\
+Average viscosity (Pa-s) & $1.666\times10^{-3}$ & $3.519 \times 10^{-5}$ \\
+Average specific heat (kJ/kg-$^{\circ}$C) & 0.1443 & 1.228 \\
+Prandtl Number & 0.01316 & 0.751 \\ 
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Compute Basic Parameters}
+\begin{enumerate}
+\item Compute the total flow area for S-CO$_2$ (m$^2$)
+
+\vspace{1.0 cm}
+
+\item Compute the average velocity for S-CO$_2$ (m/s)
+
+\vspace{1.0 cm}
+
+\item Compute the flow area (m$^2$) and wetted perimeter (m) per tube for a typical interior subchannel for the lead; ignore the potential presence of spacer grids.
+
+\vspace{1.0 cm}
+
+\item Compute the average velocity of the lead (m/s)
+
+\vspace{1.0 cm}
+
+\item Compute the Reynolds number for the lead and S-CO$_2$ side of the IHX.
+
+\vspace{1.0cm}
+
+\item Compute the Peclet number for the lead.
+
+\vspace{1.0 cm}
+
+\item Compute the log-mean temperature difference $\left(\Delta T_{\text{LM}} \right)$ ($^{\circ}$C) for the heat exchanger.
+
+\end{enumerate}
+
+\section{Perform Analysis for Smooth IHX Tubes}
+
+\begin{enumerate}[resume]
+\item Compute the Nusselt number on the lead side of the tubes using the Kazimi-Carelli correlation.
+
+\vspace{1.0 cm}
+
+\item Compute the corresponding convective heat transfer coefficient on the lead-side of the IHX tube. (kW/m$^2$-$^{\circ}$C)
+
+\vspace{1.0 cm}
+
+\item Compute the Fanning friction factor for a smooth tube for the S-CO$_2$ side.  Use the smooth tube correlation associated with the Ravigururajan and Bergles correlation for heat exchangers with extended surfaces.
+
+\vspace{1.0 cm}
+
+\item Compute the Nusselt number for the smooth-tube heat exchanger on the S-CO$_2$ side using the equation below.
+
+$$ \text{Nu}_{\text{sm}} = \frac{\left(\sfrac{f^{\prime}_{\text{sm}}}{2} \right)\text{RePr}}{1 + 12.7 \sqrt{\frac{f^{\prime}}{2}} \left(\text{Pr}^{\sfrac{2}{3}}-1 \right) }$$
+
+
+\vspace{1.0 cm}
+
+\item Compute the corresponding convective heat transfer coefficient for the smooth tube for the S-CO$_2$ side. (kW/m$^2$-$^{\circ}$C)
+
+\vspace{1.0 cm}
+
+\item Compute the overall heat transfer coefficient (kW/m$^2$-$^{\circ}$C) for the smooth-tube case using the equation below:
+
+$$ U = \frac{1}{\frac{1}{h_{\text{S-CO}_2}} + \frac{D_{\text{tube,i}}}{2k_w} \ln \frac{D_{\text{tube,o}}}{D_{\text{tube,i}}} + \frac{D_{\text{tube,i}}}{D_{\text{tube,o}}} \frac{1}{h_{\text{lead}}}       }$$
+
+\vspace{1.0 cm}
+
+\item Compute total heat exchanger area (m$^2$) required to transfer the design thermal power for the smooth tube case.
+
+\vspace{1.0 cm}
+
+\item Compute the required length (m) of the heat exchanger (note that the area calculated in the previous question is in reference to the tube inner diameter, i.e. $A_{\text{total}} = \pi D_{\text{tube,i}}L_{\text{tube}}N_{\text{tubes}}$).
+
+\vspace{1.0 cm}
+\item Compute the differential pressure (kPa) due to major head losses for the smooth tube case recalling:
+$$ \Delta p = f \left(\frac{L}{D} \right)\frac{\rho V^2}{2}$$
+where $f$ is the Darcy friction factor.  Recall also that the friction factor calculated in the analysis above is the \emph{Fanning} friction factor.  The relationship between the Fanning friction factor and the Darcy friction factor is:
+$$f_{\text{Darcy}} = 4 f^{\prime}_{\text{Fanning}}$$
+
+\end{enumerate}
+
+\section{Perform Analysis for Enhanced IHX}
+
+\begin{enumerate}[resume]
+\item Calculate the friction factors for the tubes with helical ribs using the Ravigururajan and Bergles correlation.
+
+\vspace{1.0 cm}
+
+\item Calculate the Nusselt Number for the enhanced tubes using the correlation due to Bergles and Ravigururajan given in the equation below:
+
+$$\frac{\text{Nu}_{\text{augmented}}}{\text{Nu}_{\text{smooth}}} = \left\{  1 + \left[2.64\text{Re}^{0.036} \left(\frac{e}{D} \right)^{0.212} \left(\frac{\delta}{D} \right)^{-0.21} \left(\frac{\alpha}{90} \right)^{0.29} \text{Pr}^{-0.024}\right]^{7} \right\}^{\sfrac{1}{7}} $$
+
+
+\vspace{1.0 cm}
+
+\item Compute the corresponding convective heat transfer coefficient (kW/m$^2$-$^{\circ}$C) for the augmented tubes.
+
+\vspace{1.0 cm}
+
+\item Compute the overall heat transfer coefficient (kW/m$^2$-$^{\circ}$C) for the augmented case.
+
+\vspace{1.0 cm}
+
+\item Compute the overall area (m$^2$) required for the heat exchanger in the augmented case.
+
+\vspace{1.0 cm}
+
+\item Compute the length (m) of the augmented heat exchanger.
+
+\vspace{1.0 cm}
+
+\item Compute the pressure drop (kPa) for the augmented heat exchanger.
+
+
+\end{enumerate}
+
+
+
+\end{fullwidth}

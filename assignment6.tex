@@ -1,0 +1,125 @@
+\chapter{Assignment \#6: Applications of Hydraulics}
+\label{ch:ass6}
+
+
+\begin{fullwidth}
+\section{Part I - AP1000 Primary Plant Hydraulics}
+Use the parameters given below in answering the following questions
+
+\begin{table}
+\begin{tabular}{ l | l }
+\toprule
+\textbf{Cold Leg} & \\
+\hline
+Flow rate & $30 \times 10^{6}$ lb$_{\text{m}}$/hr per leg \\
+Length & 20 ft \\
+Inside diameter & 22 in \\
+Relative roughness & 0.0035 \\
+Temperature & 540$^{\circ}$F \\
+
+   & \\
+\textbf{Hot Leg} & \\
+\hline
+Flow rate & $60 \times 10^{6}$ lb$_{\text{m}}$/hr per leg \\
+Length & 16 ft \\
+Inside diameter & 31 in \\
+Relative roughness & 0.003 \\
+Temperature & 610$^{\circ}$F \\
+  & \\
+\textbf{Steam Generator} & \\
+\hline
+Flow rate (primary side) & $60 \times 10^6$ lb$_{\text{m}}$/hr per leg \\
+Number of tubes & 10,025 \\
+Tube inside diameter & 0.608 in \\
+Average tube length & 884 in \\
+Minor loss coefficients (total) & 1.8 \\
+Secondary-side Pressure & 836 \\
+ & \\
+\textbf{Core} & \\
+\hline
+Nozzle-to-Nozzle pressure drop & 62.3 psid \\
+System nominal pressure & 2250 psia \\
+\bottomrule
+\end{tabular}
+\end{table}
+\emph{For all primary system fluid property evaluations, assume the pressure is equal to the system nominal pressure.}
+
+\begin{enumerate}
+\item Calculate the cold leg friction factor and pressure drop using the Karman-Nikuradse equation for turbulent adiabatic flow in smooth pipes.
+
+\vspace{1.0cm}
+
+\item Calculate the cold leg friction factor and pressure drop using the Colebrook equation for turbulent adiabatic flow in non-smooth pipes.
+
+\vspace{1.0cm}
+\item Calculate the hot leg friction factor and pressure drop using the Colebrook equation for turbulent adiabatic flow in non-smooth pipes.
+
+\vspace{1.0cm}
+
+\item Calculate the friction factor and pressure drop for a typical tube in a Steam Generator using the Petukhov correlation for diabatic flow.  Assume that the primary coolant temperature at the tube wall is equal to the temperature on the secondary side of the steam generator.  Use the average coolant temperature on the primary side of the Steam Generator to establish bulk primary coolant water properties.  Verify that the viscosity ratio used in the Petukhov correlation is within prescribed limits.
+
+\vspace{1.0 cm}
+
+\item Assuming a pump efficiency of 80\%, calculate the rated power [hp] for a single reactor coolant pump.
+
+
+\end{enumerate}
+
+\section{Part II - Pressurizer Spray Flow}
+
+\begin{enumerate}[resume]
+\item The pressure at the cold-leg tap of the pressurizer spray line is approximately 2310 psia.  The pressure of the steam volume of the pressurizer is 2235 psia.  The spray nozzle of the AP1000 pressurizer is elevated approximately 60 ft above the cold leg tap and the overall pressurizer spray piping length (from the cold leg tap to the spray flow nozzle) is approximately 94 ft.  If the design spray flow rate is 700 gal/min and the spray line is of uniform diameter of 4 inches with a relative roughness of 0.0004, estimate the prssure drop due to:
+\begin{enumerate}
+\item Elevation change
+\item Major head losses
+\item Minor head losses
+\end{enumerate}
+For all calculations, neglect kinetic energy effects.  \textbf{Note:} there are approximately 7.48 gallons in a cubic foot.
+
+\end{enumerate}
+
+\pagebreak 
+
+\section{Part III - Frictional Pressure Drop in the AP1000 core}
+Consider the AP1000 core configuration.  Relevant design information is provided in the table below.
+
+\begin{table}
+\begin{tabular}{ l | l }
+\toprule
+Total core flow rate & $51.4 \times 10^6$ kg/hr \\
+Number of fuel assemblies & 157 \\
+Flow channels per assembly & 289 \\
+Coolant inlet temperature & 281$^{\circ}$C \\
+Coolant outlet temperature & 321$^{\circ}$C \\
+Nominal pressure & 15.51 MPa \\
+Average coolant viscosity & $9.061 \times 10^{-5}$ Pa-s \\
+Fuel pin outside diameter & 9.5 mm \\
+Fuel pin pitch & 12.6 mm \\
+Core height & 4.8 m \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{enumerate}[resume]
+\item Calculate the average velocity [m/s] through a typical flow channel in the interior of an assembly.
+
+\vspace{1.0 cm}
+
+\item Compute the Reynolds number for a typical flow channel on the interior of a fuel assembly.
+
+\vspace{1.0 cm}
+
+\item Calculate the equivalent circular-channel friction factor using the McAdams equation.
+
+\vspace{1.0 cm}
+
+
+\item Calculate the friction factor for a typical interior channel using the Cheng-Todreas correlation.
+
+\vspace{1.0 cm}
+
+\item Based on the friction factor calculated for the core, and accounting for potential energy effects (the core is oriented vertically), estimate the pressure drop between the core inlet and outlet.  Express your answer in psia.
+\end{enumerate}
+
+
+\end{fullwidth}

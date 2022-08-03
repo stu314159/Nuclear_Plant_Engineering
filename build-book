@@ -1,0 +1,9 @@
+#!/bin/bash
+
+pdflatex Nuclear_Plant_Engineering
+bibtex Nuclear_Plant_Engineering
+texindy --language english Nuclear_Plant_Engineering.idx
+makeindex Nuclear_Plant_Engineering
+pdflatex Nuclear_Plant_Engineering
+pdflatex Nuclear_Plant_Engineering
+pdflatex Nuclear_Plant_Engineering

@@ -1,0 +1,131 @@
+\chapter{Lecture 22 - Fuel Thermal Conductivity with MATLAB}
+\label{ch:ch22}
+\section{Objectives}
+The objective of this lecture is:
+\begin{enumerate}
+\item Explain the implementation of the FRAPCON fuel thermal conductivity model in a MATLAB environment.
+\end{enumerate}
+
+\section{FRAPCON Model---restated} \index{FRAPCON, MATLAB}
+
+The FRAPCON Model was discussed in Lecture 22, but in brief, the equation is as follows:
+
+\begin{fullwidth}
+\begin{equation*}
+k_{0.95 \ \text{TD}} = \left\{A + BT + a \cdot \text{gad} + f(Bu) +  \left[1-0.9e^{-0.04 Bu} \right]g(Bu)h(T) \right\}^{-1} +  \frac{E}{T^2}e^{-\sfrac{F}{T}}
+\end{equation*}
+\end{fullwidth}
+where the constants and functions included in this definition can be obtained from the previous lecture.
+
+We adjust for density as follows:
+\begin{equation*}
+\eta(\rho) = \frac{1.0789 \sfrac{\rho}{\rho_{\text{TD}}}}{1 + 0.5\left(1 - \sfrac{\rho}{\rho_{\text{TD}}} \right)} 
+\label{eq:FRAP_density2}
+\end{equation*}
+so that $k(\rho) = \eta(\rho)k_{0.95 \ \text{TD}}$.
+
+\section{MATLAB implementation}
+The first step will be to establish a MATLAB representation for the constants and functions that are used in the correlation:
+
+\begin{lstlisting}[caption=Step 1.]
+% range of applicability
+% 300K < T < 3000 K
+% Bu < 62 GWd/Mt
+% Gad < 10 w.t. %
+% 92% < TD < 97%
+
+a_frapcon = 115.99; % cm-K/W
+f_frapcon = @(Bu) 0.187*Bu; %cm-K/W
+g_frapcon = @(Bu) 3.8*(Bu.^0.28);% cm-K/W
+Q_frapcon = 6380; %K
+h_frapcon = @(T) 1./(1 + 396*exp(-Q_frapcon./T)); % unitless
+\end{lstlisting}
+
+Since different types of oxide fuels are possible, we set up a selection structure to pick between UO$_{2}$ and MOX.
+\begin{lstlisting}[caption=Step 1 continued.]
+% set constants based on fuel type.
+fuel_type = 'UO2'; % fuel type = 'UO2' or 'MOX'
+switch fuel_type
+    case 'UO2'
+        A_frap = 4.52; %cm-K/W
+        B_frap = 2.46e-2; %cm/W
+        E_frap = 3.5e7; %W-K/cm
+        F_frap = 16361; %K
+       
+    case 'MOX'
+        O_M = 2.0; % set for MOX fuel - default 2.0
+        x_frap = 2.0 - O_M;
+        A_frap = 285*x_frap + 3.5; %cm-K/W
+        B_frap = (2.86 - 7.15*x_frap)*1e-2; %cm/W
+        E_frap = 1.5e7; %W-K/cm
+        F_frap = 13520; %K
+    otherwise
+        % raise an error
+        error('Unknown fuel type for FRAPCON model\n');
+end
+\end{lstlisting}
+
+The next step will be to create a MATLAB representation of the FRAPCON thermal conductivity correlation.  You need to include the density correction function $\eta(\rho)$ if you want to model fuels with density other than 95 percent theoretical density.\marginnote{\textbf{Note:} Be sure to write your local functions to they can accept vector arguments.}
+
+\begin{lstlisting}[caption=MATLAB function for the FRAPCON correlation.]
+% equation 8.22a
+k_0p95_frap = @(T,gad,Bu) ...
+    1./(A_frap + B_frap*T+a_frapcon*gad+f_frapcon(Bu)+...
+    (1 - 0.9*exp(-0.04*Bu)).*g_frapcon(Bu).*h_frapcon(T))+...
+    E_frap./(T.^2).*exp(-F_frap./T);
+% (be careful with syntax to allow any argument to be a vector)
+
+% correction factor for theoretical density
+eta_frap = @(den) 1.0789*den/(1+0.5*(1-den));
+
+% combined expressions
+k_frap = @(T,gad,Bu,den) k_0p95_frap(T,gad,Bu)*eta_frap(den);
+
+\end{lstlisting}
+
+Now we have the correlation available in our environment, it is time to apply problem specific parameters such as burn-up, density, and gadolinium concentration.
+
+\begin{lstlisting}[caption=Apply problem-specific parameters.]
+%% Given Parameters
+T_fo = 400; % C
+q_linear = 25; % kW/m
+gad = 0.00; % mass fraction of gadolinia
+Bu = 55; % GWd/MT_ihm
+den = 0.92; % percent theoretical density
+
+% Function that now includes
+% problem-specific parameters.
+k_frap_p = @(T) k_frap(T,gad,Bu,den);
+
+\end{lstlisting}
+
+Recall that the equation we need to solve is:
+\begin{equation}
+\int_{T(R)}^{T(0)} k(T,gad,Bu)\eta(\rho) \ dT = \frac{q^{\prime}}{4 \pi}
+\label{eq:heat_final_ch22}
+\end{equation}
+where we need, for instance, to find the maximum center line temperature, $T(0)$, resulting from a given fuel outer temperature and linear heat rate.  This is in general a non-linear equation.  We can make use of MATLAB's powerful and reliable built-in non-linear root-finding function ``fzero'' if we re-arrange Equation \ref{eq:heat_final_ch22} as follows:
+
+\begin{equation}
+\int_{T(R)}^{T(0)} k(T,gad,Bu)\eta(\rho) \ dT - \frac{q^{\prime}}{4 \pi} = 0
+\end{equation}
+
+We do this in the listing below where, please note, we have to do some unit conversions to make sure that $q^{\prime}$ is compatible with the units of thermal conductivity.\marginnote{\textbf{Note:} The built-in function \emph{integral} will call the in-line function \emph{k\_frap\_p} with vectors of ``integration points.''  If you failed to implement \emph{k\_frap\_p} so that it could correctly accept vector arguments, \emph{integral} will fail. }
+
+\begin{lstlisting}[caption=Set up non-linear equation for solver.]
+f_fuel = @(T) integral(k_frap_p,T_fo+273.15,T) - ...
+    (q_linear*1000/100)/(4*pi);
+\end{lstlisting}
+
+Lastly we will provide an initial guess for $T(0)$ and invoke ``fzero'' to get the actual fuel center line temperature.
+
+\begin{lstlisting}[caption=Solve for fuel centerline temperature.]
+T_est = 2250; 
+T_max_K = fzero(f_fuel,T_est+273.15);
+T_max = T_max_K - 273.15;
+
+% report the result
+fprintf('The fuel center line temperature is %5.4g degrees C.\n',T_max);
+\end{lstlisting}
+
+You should compare the result you get to the result you obtain using the graphical method described in Lecture 21.  Full code for this example is proved in the Appendices.

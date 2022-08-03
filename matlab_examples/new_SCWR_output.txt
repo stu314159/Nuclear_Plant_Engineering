@@ -1,0 +1,47 @@
+%% New SCWR Output
+balance function value at convergence: 0.000685526 kJ/kg 
+Flow fraction to CFWH1: 0.192103 
+Flow fraction to CFWH2: 0.133227 
+Flow fraction to OFWH: 0.14222 
+Enthalpy of flow into CFWH2: 770.83 kJ/kg 
+            P        T         h          s          x         ef   
+          _____    ______    ______    _______    _______    _______
+
+    1         4     28.96    121.39    0.42239          0       1.11
+    2       200    28.971    121.61    0.42248        NaN     1.3079
+    3       200    120.21     504.7     1.5302          0     64.278
+    4      8900    121.24    515.17     1.5334        NaN     73.821
+    5      8900    180.85    770.83     2.1368        NaN     155.09
+    6      8900       230    991.46      2.598        NaN     242.43
+    7     24000    233.61    1011.9     2.6029        NaN     261.52
+    8     24000    302.54    1345.2     3.2184        NaN     416.83
+    9     24000       550    3350.8     6.2116        NaN     1557.5
+    10     8900     390.9    3093.9     6.2548        NaN     1288.1
+    11     6000    336.38    3004.2     6.2712        NaN     1193.6
+    12     1000    179.88    2671.9     6.3527    0.94777     837.74
+    13     1000    179.88    2777.1      6.585          1     875.83
+    14      200    120.21    2521.5     6.6572    0.91608     599.34
+    15      200    120.21    2706.2     7.1269          1     648.35
+    16        4     28.96    2202.8      7.312    0.85575     91.436
+    17     1000    179.88    762.52     2.1381          0     146.41
+    18      200    120.21    762.52     2.1856        NaN     132.68
+    19      200    120.21     504.7     1.5302          0     64.278
+    20     8900    302.54    1359.3     3.2793        NaN      413.4
+    21     6000    275.58    1359.3     3.2928        NaN     409.51
+    22     6000    275.58    1213.9     3.0278        NaN     340.69
+    23     8900    302.54    1368.1     3.2946        NaN     417.78
+    24      101        16    67.264    0.23896        NaN          0
+    25      101        27    113.28    0.39515        NaN    0.87692
+
+Specific work Hotwell Pump: -0.116629 kJ/kg 
+Specific work Condensate Booster Pump: -7.32751 kJ/kg 
+Specific work Drain Booster Pump: -46.2197 kJ/kg 
+Specific work main feed pump: -20.488 kJ/kg 
+Specific work HP1: 256.881 kJ/kg 
+Specific work HP2: 72.4803 kJ/kg 
+Specific work HP3: 232.71 kJ/kg 
+Specific work LP1: 169.658 kJ/kg 
+Specific work LP2: 262.54 kJ/kg 
+Net specific work: 920.118 kJ/kg 
+Net specific heat: 920.119 kJ/kg 
+Thermal efficiency: 45.88 percent 

@@ -1,0 +1,94 @@
+\chapter{Example - FRAPCON Fuel Thermal Conductivity with MATLAB}
+\label{app:FRAP_ex}
+
+\index{FRAPCON, MATLAB}
+
+To run this code, create a MATLAB script containing the code in the listing below.
+
+\begin{fullwidth}
+\begin{lstlisting}
+%% Fuel Thermal Conductivity - Maximum Fuel Temperature (Frapcon Model)
+
+clear
+clc
+close 'all'
+
+%% Given Parameters
+T_fo = 400; % C
+q_linear = 25; % kW/m
+gad = 0.00; % mass fraction of gadolinia
+Bu = 55; % GWd/MT_ihm
+
+%% Fuel Thermal Conductivity Model
+% FRAPCON model
+% accounts for 
+% temperature
+% burnup
+% gadolinia
+% density other than 0.95% theoretical density is corrected with an
+% additional factor.
+
+% range of applicability
+% 300K < T < 3000 K
+% Bu < 62 GWd/Mt
+% Gad < 10 w.t. %
+% 92% < TD < 97%
+
+a_frapcon = 115.99; % cm-K/W
+f_frapcon = @(Bu) 0.187*Bu; %cm-K/W
+g_frapcon = @(Bu) 3.8*(Bu.^0.28);% cm-K/W
+Q_frapcon = 6380; %K
+h_frapcon = @(T) 1./(1 + 396*exp(-Q_frapcon./T)); % unitless
+
+
+% set constants from Table 8.4 based on fuel type.
+fuel_type = 'UO2'; % fuel type = 'UO2' or 'MOX'
+switch fuel_type
+    case 'UO2'
+        A_frap = 4.52; %cm-K/W
+        B_frap = 2.46e-2; %cm/W
+        E_frap = 3.5e7; %W-K/cm
+        F_frap = 16361; %K
+       
+    case 'MOX'
+        O_M = 2.0; % set for MOX fuel - default 2.0
+        x_frap = 2.0 - O_M;
+        A_frap = 285*x_frap + 3.5; %cm-K/W
+        B_frap = (2.86 - 7.15*x_frap)*1e-2; %cm/W
+        E_frap = 1.5e7; %W-K/cm
+        F_frap = 13520; %K
+    otherwise
+        % raise an error
+        error('Unknown fuel type for FRAPCON model\n');
+end
+
+% equation 8.22a
+k_0p95_frap = @(T,gad,Bu) ...
+    1./(A_frap + B_frap*T+a_frapcon*gad+f_frapcon(Bu)+...
+    (1 - 0.9*exp(-0.04*Bu)).*g_frapcon(Bu).*h_frapcon(T))+...
+    E_frap./(T.^2).*exp(-F_frap./T);
+% (be careful with syntax to allow any argument to be a vector)
+
+% correction factor for theoretical density
+eta_frap = @(den) 1.0789*den/(1+0.5*(1-den));
+
+% combined expressions
+k_frap = @(T,gad,Bu,den) k_0p95_frap(T,gad,Bu)*eta_frap(den);
+
+% set conditions for this problem.
+den = 0.92; % percent theoretical density
+
+
+k_frap_p = @(T) k_frap(T,gad,Bu,den);
+
+f_fuel = @(T) integral(k_frap_p,T_fo+273.15,T) - ...
+    (q_linear*1000/100)/(4*pi);
+T_est = 2245; %C - based on figure 8.2, fuel outer temperature and linear heat rate.
+%fprintf('From figure 8.2 estimated fuel centerline temperature is %5.4g degrees C.\n',T_est);
+T_max_K = fzero(f_fuel,T_est+273.15);
+T_max = T_max_K - 273.15;
+
+fprintf('The fuel centerline temperature is %5.4g degrees C.\n',T_max);
+\end{lstlisting}
+\end{fullwidth}
+

@@ -1,0 +1,34 @@
+\chapter{Assignment \#5: Advanced Brayton Cycle \& Combined Cycle Analysis}
+\label{ch:ass5}
+
+\newthought{Use EasyProp} and MATLAB to solve the following problems:
+
+\begin{fullwidth}
+\begin{enumerate}
+\item The Marine Gas Cooled Reactor was proposed by General Atomics to the Atomic Energy Commission in 1961.  The design concept used a closed, direct, Brayton cycle to produce power. The Brayton cycle includes two compressors (with inter-cooling), a regenerator, and one turbine.  The working fluid is helium, the maximum helium temperature is 1300$^{\circ}$F, the minimum temperature is 100$^{\circ}$F, and the minimum pressure is 450 psia.  The isentropic efficiency of the compressors are each 85\% and the isentropic efficiency of the turbine is 90\%.  The regenerator effectiveness is assumed to be 90\%.  The inlet temperature to both compressors is 100$^{\circ}$F and the pressure ratios of the compressors are equal.
+\begin{enumerate}
+\item Make a simple sketch of the cycle labeling all state points and given information.
+\item Find the thermal efficiency if $r_{p,1} = r_{p,2}=2.0$
+\item Find the pressure ratio that gives the maximum thermal efficiency along with the thermal efficiency thus obtained; and
+\item Using the pressure ratio that gives maximum thermal efficiency, find the helium flow rate [lb$_{\text{m}}$/s] and net power output [MW] if the thermal output of the reactor is 100 MW. (\textbf{Note:} 1 MW = $3.41 \times 10^6$ BTU/hr)
+\end{enumerate}
+
+\vspace{1.0cm}
+\item Consider the cycle described in problem \#1.  Assume that there are hydraulic pressure losses for each heat exchanger equal to 2\% of the incoming pressure (e.g. $P_{\text{out}} = 0.98 \times P_{\text{in}}$); pressure losses across the reactor is 5\% of the incoming pressure.  What is the maximum thermal efficiency, helium flow rate, and net power output for 100 MW (thermal) reactor power output if hydraulic losses are included?  Investigate the individual impact of pressure loss in each component and write a short discussion of your findings. (\textbf{Note:} \emph{In your analysis you should consider determining all state point pressures first since ther will be, in general, no simple relationship between the compresor pressure ratios and the turbine expansion ratio.  This is owing to the pressure drops in the regenerator (both low temperature and high temperature side), reactor and pre-cooler.  Assume that, under all conditions, minimum system pressure is constant at 450 psia})
+
+\vspace{1.5 cm}
+
+\item Consider a closed, direct Brayton cycle.  Helium at 900 psia at 1500$^{\circ}$F leaves a High Temperature Gas-cooled Reactor (HTGR) and enters a turbine where the helium is expanded down to 1000 psia.  The helium exiting the turbine is used as the heat source in a Rankine cycle; the helium exits the boiler at 300$^{\circ}$F and then enters a compressor.  The steam produced in the boiler is expanded in a turbine to 1 psia and exhausted into a condenser which rejects wasted heat and delivers saturated liquid to a pump.  The pressure loss of the helium in the boiler and HTGR is 10 psia in each component.  For the Rankine cycle, assume that isobaric heat transfer occurs in the boiler and condenser.  The isentropic efficiency of all pumps, compressors, and turbines is 100\%. (\textbf{Hint:} consider using the EasyProp function ``P\_sT'' to get the turbine exhaust pressure.)
+
+\begin{enumerate}
+\item Draw a simple sketch of the system indicating given temperature and pressure data.
+\item What is the ratio of helium mass flow rate and steam mass flow rate: $\frac{\dot{m}_{\text{steam}}}{\dot{m}_{\text{helium}}}$
+\item What is the compressor pressure ratio for the compressor in the Brayton cycle?
+\item What is the net work from the Rankine cycle and Brayton cycle  per unit mass flow rate of helium in BTU/lb$_{\text{m}}$?
+\item What is the thermal efficiency of the combined cycle?
+\item What is the net specific work and thermal efficiency of the combined cycle if CO$_{2}$ is used (same temperatures and pressures) instead of helium?  Briefly discuss the relative performance between CO$_2$ and helium (e.g. efficiency, net specific work, mass flow rates of gas for a given power output, etc \dots)
+\end{enumerate}
+
+\end{enumerate}
+
+\end{fullwidth}

@@ -1,0 +1,569 @@
+\documentclass{tufte-book}
+
+\hypersetup{colorlinks}% uncomment this line if you prefer colored hyperlinks (e.g., for onscreen viewing)
+
+%%
+% Book metadata
+\title{ER468 Nuclear Plant Engineering}
+\author[CAPT Stu Blair]{United States Naval Academy}
+\publisher{Mighty Goat Press}
+
+%%
+% If they're installed, use Bergamo and Chantilly from www.fontsite.com.
+% They're clones of Bembo and Gill Sans, respectively.
+%\IfFileExists{bergamo.sty}{\usepackage[osf]{bergamo}}{}% Bembo
+%\IfFileExists{chantill.sty}{\usepackage{chantill}}{}% Gill Sans
+
+%\usepackage{microtype}
+
+%%
+% Just some sample text
+\usepackage{lipsum}
+
+%%
+% For nicely typeset tabular material
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+%%
+% For graphics / images
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+%%
+% Prints argument within hanging parentheses (i.e., parentheses that take
+% up no horizontal space).  Useful in tabular environments.
+\newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}}
+
+%%
+% Prints an asterisk that takes up no horizontal space.
+% Useful in tabular environments.
+\newcommand{\hangstar}{\makebox[0pt][l]{*}}
+
+%%
+% Prints a trailing space in a smart way.
+\usepackage{xspace}
+
+%%%% packages added by Stu
+
+\usepackage{comment}
+
+% fancy enumeration tricks
+\usepackage{enumitem}
+
+% have appendices
+\usepackage{appendix}
+
+% has sfrac command
+\usepackage{xfrac}
+
+% mathtools for over/under brace/bracket among other nifty tools
+\usepackage{mathtools}
+
+
+\usepackage{cancel} % to get oblique strike-through
+
+%\usepackage{minted}
+\usepackage{pifont}
+\usepackage{color}
+
+\usepackage{listings}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  inputpath=./matlab_examples/,
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Matlab,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+% example usage for code: \begin{lstlisting}[caption=< caption text >, label=<label>]
+
+%%% end packages added by Stu
+%%
+% Some shortcuts for Tufte's book titles.  The lowercase commands will
+% produce the initials of the book title in italics.  The all-caps commands
+% will print out the full title of the book in italics.
+\newcommand{\vdqi}{\textit{VDQI}\xspace}
+\newcommand{\ei}{\textit{EI}\xspace}
+\newcommand{\ve}{\textit{VE}\xspace}
+\newcommand{\be}{\textit{BE}\xspace}
+\newcommand{\VDQI}{\textit{The Visual Display of Quantitative Information}\xspace}
+\newcommand{\EI}{\textit{Envisioning Information}\xspace}
+\newcommand{\VE}{\textit{Visual Explanations}\xspace}
+\newcommand{\BE}{\textit{Beautiful Evidence}\xspace}
+
+\newcommand{\TL}{Tufte-\LaTeX\xspace}
+
+% Prints the month name (e.g., January) and the year (e.g., 2008)
+\newcommand{\monthyear}{%
+  \ifcase\month\or January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or
+  December\fi\space\number\year
+}
+
+
+% Prints an epigraph and speaker in sans serif, all-caps type.
+\newcommand{\openepigraph}[2]{%
+  %\sffamily\fontsize{14}{16}\selectfont
+  \begin{fullwidth}
+  \sffamily\large
+  \begin{doublespace}
+  \noindent\allcaps{#1}\\% epigraph
+  \noindent\allcaps{#2}% author
+  \end{doublespace}
+  \end{fullwidth}
+}
+
+% Inserts a blank page
+\newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
+
+\usepackage{units}
+
+% Typesets the font size, leading, and measure in the form of 10/12x26 pc.
+\newcommand{\measure}[3]{#1/#2$\times$\unit[#3]{pc}}
+
+% Macros for typesetting the documentation
+\newcommand{\hlred}[1]{\textcolor{Maroon}{#1}}% prints in red
+\newcommand{\hangleft}[1]{\makebox[0pt][r]{#1}}
+\newcommand{\hairsp}{\hspace{1pt}}% hair space
+\newcommand{\hquad}{\hskip0.5em\relax}% half quad space
+\newcommand{\TODO}{\textcolor{red}{\bf TODO!}\xspace}
+\newcommand{\na}{\quad--}% used in tables for N/A cells
+\providecommand{\XeLaTeX}{X\lower.5ex\hbox{\kern-0.15em\reflectbox{E}}\kern-0.1em\LaTeX}
+\newcommand{\tXeLaTeX}{\XeLaTeX\index{XeLaTeX@\protect\XeLaTeX}}
+% \index{\texttt{\textbackslash xyz}@\hangleft{\texttt{\textbackslash}}\texttt{xyz}}
+\newcommand{\tuftebs}{\symbol{'134}}% a backslash in tt type in OT1/T1
+\newcommand{\doccmdnoindex}[2][]{\texttt{\tuftebs#2}}% command name -- adds backslash automatically (and doesn't add cmd to the index)
+\newcommand{\doccmddef}[2][]{%
+  \hlred{\texttt{\tuftebs#2}}\label{cmd:#2}%
+  \ifthenelse{\isempty{#1}}%
+    {% add the command to the index
+      \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2}}% command name
+    }%
+    {% add the command and package to the index
+      \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}% command name
+      \index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}% package name
+    }%
+}% command name -- adds backslash automaticallygit@github.com:stu314159/Nuclear_Plant_Engineering.git
+\newcommand{\doccmd}[2][]{%
+  \texttt{\tuftebs#2}%
+  \ifthenelse{\isempty{#1}}%
+    {% add the command to the index
+      \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2}}% command name
+    }%
+    {% add the command and package to the index
+      \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}% command name
+      \index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}% package name
+    }%
+}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quotation}\ttfamily\parskip0pt\parindent0pt\ignorespaces}{\end{quotation}}% command specification environment
+\newcommand{\docenv}[1]{\texttt{#1}\index{#1 environment@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}% environment name
+\newcommand{\docenvdef}[1]{\hlred{\texttt{#1}}\label{env:#1}\index{#1 environment@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}\index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}\index{#1 class option@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}% document class option name
+\newcommand{\docclsoptdef}[1]{\hlred{\texttt{#1}}\label{clsopt:#1}\index{#1 class option@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}% document class option name defined
+\newcommand{\docmsg}[2]{\bigskip\begin{fullwidth}\noindent\ttfamily#1\end{fullwidth}\medskip\par\noindent#2}
+\newcommand{\docfilehook}[2]{\texttt{#1}\index{file hooks!#2}\index{#1@\texttt{#1}}}
+\newcommand{\doccounter}[1]{\texttt{#1}\index{#1 counter@\texttt{#1} counter}}
+
+% Generates the index
+\usepackage{makeidx}
+\makeindex
+
+\begin{document}
+
+\begin{fullwidth}
+\thispagestyle{empty}
+\begin{figure}
+\includegraphics[width=1.5\textwidth]{cover5a.png}
+\end{figure}
+\end{fullwidth}
+
+% Front matter
+\frontmatter
+
+% r.1 blank page
+%\blankpage
+
+
+% v.2 epigraphs
+\newpage\thispagestyle{empty}
+\vfill
+%\openepigraph{
+%A good mind may be compared to a vein of precious metal embedded in rock.  If it is to be of value, it %must first be recognized, then laboriously brought forth and carefully worked over.
+%}%{H.G. Rickover}
+
+\vfill
+\openepigraph{%
+...principles are more important than facts...
+}{H.G. Rickover}
+
+
+\vfill
+\openepigraph{%
+\ldots one of the prerequisites of originality is the art of forgetting, at the proper moment, what we know. Without this art the mind remains cluttered with ready-made answers and is not forced to ask the proper questions.
+}{H.G. Rickover}
+
+
+% r.3 full title page
+\maketitle
+
+
+% v.4 copyright page
+\newpage
+\begin{fullwidth}
+~\vfill
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{\baselineskip}
+Copyright \copyright\ \the\year\ \thanklessauthor
+
+\par\smallcaps{Published by \thanklesspublisher}
+
+%\par\smallcaps{tufte-latex.github.io/tufte-latex/}
+%
+%\par Licensed under the Apache License, Version 2.0 (the ``License''); you may not
+%use this file except in compliance with the License. You may obtain a copy
+%of the License at \url{http://www.apache.org/licenses/LICENSE-2.0}. Unless
+%required by applicable law or agreed to in writing, software distributed
+%under the License is distributed on an \smallcaps{``AS IS'' BASIS, WITHOUT
+%WARRANTIES OR CONDITIONS OF ANY KIND}, either express or implied. See the
+%License for the specific language governing permissions and limitations
+%under the License.\index{license}
+
+\par\textit{First printing, \monthyear}
+\end{fullwidth}
+
+% r.5 contents
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+% r.7 dedication
+%\cleardoublepage
+%~\vfill
+%\begin{doublespace}
+%\noindent\fontsize{18}{22}\selectfont\itshape
+%\nohyphenation
+%Dedicated to the midshipmen of the United States Naval Academy; the future of our armed services and of %our country.
+%\end{doublespace}
+%\vfill
+%\vfill
+
+
+% r.9 introduction
+\cleardoublepage
+\chapter*{Preface}
+
+The goal of this book is to teach a selection of topics in energy conversion and thermal-hydraulics.  The book is organized into 30 lectures and is derived from notes developed for the course ER468 Nuclear Plant Engineering taught at the United States Naval Academy over a period spanning roughly from spring 2015 through the fall of 2022.
+
+Students of this course are all expected to have taken courses in engineering thermodynamics and fluid dynamics; most students also take a course in heat transfer concurrently with ER468.  Consequently several introductory topics are skipped altogether.  The energy conversion topics---comprising extensive treatment of Rankine, Brayton, and combined cycles---omit treatment of the most fundamental topics of thermodynamics; the thermal-hydraulics lectures cover nuclear-specific extensions of fluid dynamics and heat transfer with only the briefest mention of introductory material.
+
+The textbook used for the course while these lecture notes were prepared is Nuclear Systems by Neil Todreas and Mujid Kazimi.\cite{todreasNS}  Material from that excellent text is incorporated throughout these notes.
+
+One unconventional aspect of this text is the extensive use of MATLAB\cite{matlab} for carrying out calculations.  Students of this course are expected to be familiar with the MATLAB programming environment and language features.  Thermal and transport properties of fluids are made available with the help of EasyProp,\cite{easyprop} which is a Python interface to the free and open-source library CoolProp and its associated Python wrapper.\cite{coolprop_wrapper} All of the examples provided in this  text use MATLAB but the underlying Python libraries could, of course, be used in Python. The goal of this approach is to make these material properties available in a computing environment that the students could easily use in conjunction with their other engineering analysis workflows; I specifically wanted to avoid a special-purpose tool that could only be employed separately.  
+
+As with any textbook, the assignments comprise an essential element of the material presented.  The assignments presented in this text were delivered in a ``workshop'' format; the class met in a computer laboratory and students spent a class period working the problems.  This format provides ample opportunities for the students to ask questions---directed at the instructor or to each other---resulting in a very efficient learning environment.  However you go about it, you will miss out on a lot of material if you choose to skip the assignments.
+
+
+
+%%
+% Start the main matter (normal chapters)
+\mainmatter
+
+\part{Nuclear Energy Conversion}
+\chapter{Lecture 1 - Course Introduction, Rankine Cycle Review}
+\label{ch:lec1}%<< think of better label and chapter names
+\section{Objectives}
+The objectives of this lecture are:
+\begin{itemize}
+\item Introduce the course including basic topics covered, syllabus, and course policy
+\item Review the basic Rankine Cycle that you learned in EM319 Thermodynamics I
+\end{itemize}
+
+\section{Course Introduction}
+The basic topics that we will cover include:
+\begin{enumerate}
+\item Rankine Cycle 
+\item Brayton Cycles
+\item Combined Cycles 
+\item Hydraulic analysis of nuclear systems
+\item Thermal analysis of nuclear systems
+\item Non-steady-state analysis 
+\end{enumerate}
+\newthought{The first three topics comprise} a thorough introduction to nuclear energy conversion.  The cycles that we analyze will range in complexity to allow introductory concepts to be reviewed while also addressing energy conversion cycles of practical relevance in modern nuclear systems; the latter are necessarily complex.
+
+The last three topics are core elements of a typical ``thermal-hydraulics'' course and extend concepts taught in more general fluid dynamics and heat transfer classes with concepts and correlations that are relevant to nuclear applications.
+
+%\subsection{Course Administrative Materials}
+%The course syllabus and course policy statements are provided separately.
+%
+%\subsection{Course  Policy Highlights}
+%The following elements of the course policy are highlighted here:
+%\begin{itemize}
+%\item There will be 3 mid-term exams each comprising 15\% of your final grade.  
+%\item The final exam accounts for 30\% of your grade.
+%\item Approximately 12 problem sets will be assigned, collectively comprising the %remaining 25\% of your grade.
+%\marginnote{
+%Summary of grade breakdown:
+%\begin{enumerate}
+%\item Midterm Exams (3) - 45\%
+%\item Final Exam - 30\%
+%\item Problem Sets - 25\%
+%\end{enumerate}
+%}
+%\item Homework must be submitted on time.  Late homework will be assessed a 5\% %penalty for each calendar day past the due date.
+%\item Attendance will be taken at the beginning of class.  You must be in your %seat and ready when attention is called; if you are not, you may be marked tardy %or absent.
+%\end{itemize}
+%Please do not hesitate to contact me if you have any questions or concerns %regarding these policy items.
+%
+\index{Rankine Cycle}
+\section{Rankine Cycle Review}
+\newthought{The overwhelming majority of} the energy conversion cycles for nuclear power plants are based on the Rankine Cycle. \marginnote{\emph{Rankine cycle} is another term for a "Steam Cycle" comprising a boiler or steam generator to make steam that is directed through a turbine that converts the thermal energy of the steam to mechanical work. The steam exiting the turbine is condensed to water and pumped back to the boiler or steam generator to complete the cycle.}  Features employed in various implementations of the Rankine cycle range from the compact, reliable, albeit \emph{simple} steam plants used on nuclear submarines to complex but highly efficient - and correspondingly difficult to analyze - systems used in commercial nuclear power plants.  In this course we will study Rankine cycles deeply.  As a starting point, however, we will use a simplified and idealized representation of a basic Rankine cycle based on the Westinghouse AP1000. \cite{westinghouse2011westinghouse}  A schematic of this cycle is given in Figure \ref{fig:simple_rankine}.
+
+\newthought{The simple ideal} Rankine cycle comprises four basic processes:
+\begin{enumerate}
+\item $(1 \rightarrow 2)$ \textbf{isentropic compression} A feed pump is used to increase the pressure (flow energy) of the saturated liquid that exits the condenser.
+\item $(2 \rightarrow 3)$ \textbf{isobaric heat addition} Feed enters the steam generator and, at constant pressure, is heated until it changes phase, exiting the steam generator as a saturated vapor.
+\item $(3 \rightarrow 4)$ \textbf{isentropic expansion} High pressure saturated vapor is expanded in a turbine; converting its thermal energy into mechanical energy.  The exhaust gas is (usually) a saturated mixture.
+\item $(4 \rightarrow 1)$ \textbf{isobaric heat rejection} The saturated mixture leaving the turbine exhausts into a condenser where, again at constant pressure, heat is rejected to condenser cooling water until the fluid is in a liquid state.
+\end{enumerate}
+The numbers in parenthesis correspond to state point labels provided in Figure \ref{fig:simple_rankine}.
+
+\begin{figure}
+\includegraphics{simple_ideal_rankine.pdf}
+\caption{Simple ideal Rankine cycle modeled on the Westinghouse AP1000.}
+\label{fig:simple_rankine}
+\end{figure}
+
+It is also customary to illustrate the Rankine cycle on a Temperature-Entropy plot as shown in Figure \ref{fig:simple_rankine_TS}.  The numbers correspond to state-points, the curve is representative of the saturation curve for water.  The lines connecting the state point numbers represent the constant pressure or constant entropy contours, and the arrows and labels are indicating the transfer of heat and work to and from the cycle.
+
+\begin{marginfigure}
+\includegraphics{simple_ideal_rankine_TS.pdf}
+\caption{Temperature-Entropy plot of a simple, ideal, Rankine cycle.}
+\label{fig:simple_rankine_TS}
+\end{marginfigure}
+
+\newthought{We will first analyze} this cycle from the perspective of conservation of energy.  Equation \ref{eq:sfee} captures the energy terms of relevance for this analysis.
+\marginnote[1cm]{
+Notes on Equation \ref{eq:sfee}:
+\begin{itemize}
+\item PE = potential energy
+\item KE = kinetic energy
+\item enthalpy is the sum of flow energy $(P\nu)$ and internal energy $(u)$.
+\end{itemize}
+}
+\begin{equation}
+q_{i \rightarrow f} - w_{i \rightarrow f}=\underbracket{\frac{g}{g_c}\left(z_f - z_i \right)}_{\Delta \text{PE}} + \underbracket{\frac{1}{2g_c}\left(v_f^2 - v_i^2\right)}_{\Delta \text{KE}} + \underbracket{\left(h_f - h_i\right)}_{\Delta \text{ enthalpy}}
+\label{eq:sfee}
+\end{equation}
+
+For processes comprising energy conversion cycles in this course, we will assume that $\Delta$PE and $\Delta$KE are negligible unless specified otherwise.  Consequently we can generally simplify the conservation of energy equation as in Equation \ref{eq:sfee_simple}.
+
+\begin{equation}
+q_{i \rightarrow f} - w_{i \rightarrow f} = h_f - h_i
+\label{eq:sfee_simple}
+\end{equation} 
+
+\newthought{Analyzing each process of } the simple ideal Rankine cycle for conservation of energy can be carried out for each process as:
+\begin{itemize}
+\item $(1 \rightarrow 2)$ , isentropic compression $\rightarrow q_{1 \rightarrow 2} = 0$\marginnote[-0.5cm]{\textbf{Reminder:} \emph{isentropic} processes are \emph{reversible} and \emph{adiabatic}.  When we say a process is \emph{adiabatic} that means no heat in or out of the process, and thus $q_{1 \rightarrow 2} = 0$ }.  $w_{1 \rightarrow 2} = h_1 - h_2$\marginnote[0.5cm]{\textbf{Question:} do you expect $w_{1 \rightarrow 2}$ to be positive or negative?}
+\item $(2 \rightarrow 3)$, isobaric heat addition $\rightarrow w_{2 \rightarrow 3} = 0$. $q_{2 \rightarrow 3} = h_3 - h_2$
+\item $(3 \rightarrow 4)$, isentropic expansion $\rightarrow w_{3 \rightarrow 4} = h_3 - h_4, \ q_{3 \rightarrow 4}=0$.
+\item $(4 \rightarrow 1)$, isobaric heat rejection $\rightarrow q_{4 \rightarrow 1} = h_1 - h_4, \ w_{4 \rightarrow 1} = 0$.
+\end{itemize}
+
+We can compute the net specific work $(w_{\text{net}})$ and net specific heat $(q_{\text{net}})$\marginnote{\emph{Net specific work} is the amount of work produced per unit mass; \emph{net specific heat} is similarly defined.  In SI units both are typically given in kJ/kg; in USCS units: BTU/lbm.} by summing the corresponding terms from each process in the cycle.
+
+\begin{equation*}
+\begin{aligned}
+q_{\text{net}} &=q_{2 \rightarrow 3}+q_{4 \rightarrow 1} &=h_3 - h_2 + h_1 - h_4 &= h_1+h_3 - (h_2+h_4)\\
+w_{\text{net}} &=w_{1 \rightarrow 2}+w_{3 \rightarrow 4} &=h_1-h_2 + h_3 - h_4 &=h_1+h_3 - (h_2+h_4)
+\end{aligned}
+\end{equation*}
+Comparing the equations above we can see that all of the same terms are listed in the right-most equality.  From this we get a fundamental result stemming from conservation of energy:
+
+\begin{equation*}
+w_{\text{net}}=q_{\text{net}}git@github.com:stu314159/Nuclear_Plant_Engineering.git
+\end{equation*}
+
+When analyzing thermodynamic cycles you should\sidenote{You \emph{\textbf{must}}!!} always compute $w_{\text{net}}$ and $q_{\text{net}}$ and confirm that they are the same.  If they are not the same, your answer cannot be correct.\sidenote{Sadly, the converse is not true; if $w_{\text{net}}=q_{\text{net}}$ are the same, it is still possible that your answer is wrong.}
+
+\newthought{In addition to computing net specific work} and net specific heat, we customarily compute the thermal efficiency $(\eta_{\text{TH}})$.  As you doubtless remember from your introductory thermodynamics class, the thermal efficiency is given by:
+\index{efficiency, thermal}
+\begin{equation}
+\eta_{\text{TH}}=\frac{w_{\text{net}}}{q_{s}}
+\label{eq:thermal_efficiency}
+\end{equation}
+Where $q_s$ is the specific heat supplied and, for this cycle, is equal to $q_{2\rightarrow 3}$.\marginnote[-1cm]{\textbf{Reminder:} the Rankine Cycle is an example of a \emph{heat engine}.  For heat engines, the basic deal is: you provide the heat, the heat engine converts the heat to work.  At best, you might hope that a really good heat engine would convert all of the heat to work; this would correspond to a thermal efficiency of 100 percent.  In other words: the thermal efficiency is the measure that tells you what fraction of the input heat gets converted into output work.  Unfortunately it is a practical fact, which we will discuss in future lectures, that the maximum thermal efficiency is limited to far less than 100 percent. }
+
+\begin{example}
+\textbf{Simple Ideal Rankine Cycle: }Consider a Rankine Cycle used for energy conversion for a nuclear power plant.  Saturated Steam is produced at a pressure of 838 psia and the condenser pressure is 1.5 psia.  Assume all components are ideal.  Using steam tables or a Mollier chart, estimate net work and thermal efficiency for this cycle.
+
+\vspace{0.5cm}
+\emph{Answers: $w_{\text{net}}$=390.3 BTU/lbm,  $\eta_{\text{TH}}=35.1\%$}
+\end{example}
+
+
+
+% want to manage chapters separately
+% chapter = lecture
+\input{chapter2.tex}
+\input{assignment1.tex}
+\input{chapter3.tex}
+\input{chapter4.tex}
+\input{assignment2.tex}
+\input{chapter5.tex}
+\input{chapter6.tex}
+\input{chapter7.tex}
+\input{assignment3.tex}
+\input{chapter8.tex}
+\input{chapter9.tex}
+\input{chapter10.tex}
+\input{chapter11.tex}
+\input{assignment4.tex}
+\input{chapter12.tex}
+\input{chapter13.tex}
+\input{chapter14.tex}
+
+\input{assignment5.tex}
+
+
+
+\part{Hydraulics}
+\input{chapter15.tex}
+\input{chapter16.tex}
+\input{assignment6.tex}
+\input{chapter17.tex}
+\input{chapter18.tex}
+\input{chapter19.tex}
+
+
+\part{Thermal Analysis}
+\input{chapter20.tex}
+\input{chapter21.tex}
+\input{chapter22.tex}
+\input{assignment7.tex}
+\input{chapter23.tex}
+\input{chapter24.tex}
+\input{chapter25.tex}
+\input{assignment8.tex}
+\input{chapter26.tex}
+\input{chapter27.tex}
+\input{chapter28.tex}
+
+\part{Non-Steady-State Analysis}
+\input{chapter29.tex}
+\input{assignment9.tex}
+\input{chapter30.tex}
+
+%%
+% The back matter contains appendices, bibliographies, indices, glossaries, etc.
+
+\part{Back Matter}
+\backmatter
+
+\bibliography{Nuclear_Plant_Engineering}
+\bibliographystyle{plainnat}
+
+
+\appendix
+\appendixpage
+\noappendicestocpagenum
+\addappheadtotoc
+
+
+
+\chapter{Matlab Style Rules}
+\begin{enumerate}
+\item \textbf{rule:} All scripts will start with the commands: \textbf{clear}, \textbf{clc}, and \textbf{close 'all'}
+
+\textbf{rationale:} No script should depend upon any data visible in the MATLAB workspace when the script starts.  By omitting these commands, residual data within the workspace may hide errors.
+
+\item \textbf{rule:} Your code must be documented with enough details such that a reader unfamiliar with your work will know what you are doing.
+
+\textbf{rationale:} Code documentation is a habit. For more significant projects readers may need help in deciding what the author of the code intended.  For your own code, the most likely reader is you---a few months into the future.
+
+\item \textbf{rule:} Function and variable names must be meaningful and reasonable in length.
+
+\textbf{rationale:} Failing to do either make code harder to read and maintain.
+
+\item \textbf{rule:} All outputs from the code \underline{\textbf{must}} be meaningful; numbers should be formatted, part of a sentence, and include units. Graphs should be readable and axis labels should make sense and include units.
+
+\textbf{rationale:} Code output is a form of communication. It is important that this communication be clear and unambiguous.
+
+\item \textbf{rule:} Do not leave warnings from the Code Analyzer unaddressed.
+
+\textbf{rationale:} Sometimes Code Analyzer warnings can be safely ignored.  Most of the time the warning points to a stylistic error that would be unacceptable in software that you use. Occasionally these warnings are indicative of a hidden error.
+
+\item \textbf{rule:} Use the ``smart indentation tool'' to format the indentation of your code.
+
+\textbf{rationale:} This tool improves code readability. It will also occasionally point out errors that you did not see before.
+
+\item \textbf{rule:} Pre-allocate arrays; if possible initialize with \textbf{NaN} values.
+
+\textbf{rationale:} Pre-allocation improves performance and helps readability. Initialization with \textbf{NaN} helps avoid a range of potential logical errors.
+
+\item \textbf{rule:} Avoid ``magic numbers'' --- i.e. hard-coded constants.
+
+\textbf{rationale:} Constants included in your code tend to hide your program logic. Also, ``magic numbers'' make code maintenance more difficult and error prone.
+
+\item textbf{rule:} Only write one statement per line.
+
+\textbf{rationale:} Multi-statement-lines hurt code readability in almost all cases.
+
+\item \textbf{rule:} Do not write excessively long lines of code; use the line continuation ``...'' and indentation to spread long expressions over several lines.
+
+\textbf{rationale:} Following this rule improves code readability.
+\end{enumerate}
+
+\input{easyprop_interface.tex}
+\input{Mollier_Diagram.tex}
+\input{simple_rankine.tex}
+\input{scwr_ex.tex}
+\input{rrsco2_ex.tex}
+\input{comb_cycle_ex.tex}
+\input{nat_circ_demo.tex}
+\input{fuel_therm_cond_ex_app.tex}
+\input{onb_demo_app.tex}
+\input{loca_ex_app.tex}
+
+
+\printindex
+\end{document}
+
