@@ -11,7 +11,7 @@ The objectives of this lecture are:
 \newthought{In previous lectures} we have discussed a range of different heat exchangers for energy conversion applications.  
 
 \begin{itemize}
-\item For PWRs a Steam Generator provides heat transfer from the subcooled liquid water of the primary to a low-quality saturated mixture of the secondary.  Heat transfer performance on both the primary and secondary side of the heat exchanger is excellent.
+\item For PWRs a recirculating u-tube steam generator provides heat transfer from the subcooled liquid water of the primary to a low-quality saturated mixture of the secondary.  Heat transfer performance on both the primary and secondary side of the heat exchanger is excellent.
 
 \begin{marginfigure}
 \includegraphics{SG.png}
@@ -19,7 +19,7 @@ The objectives of this lecture are:
 \label{fig:SG}
 \end{marginfigure}
 
-\item The condenser of Rankine cycles provides heat transfer between the saturated mixture of turbine exhaust and subcooled liquid of the condenser cooling water.  Closed feedwater heaters in Rankine power conversion cycles work with similar fluids.
+\item The condenser of Rankine cycles provides heat transfer between the high-quality saturated mixture of turbine exhaust and subcooled liquid of the condenser cooling water.  Closed feedwater heaters in Rankine power conversion cycles work with similar fluids.
 
 \item A reheater employed in a Rankine cycle is used to transfer heat from a saturated steam to a lower-temperature and pressure saturated steam.  
 
@@ -29,7 +29,7 @@ The objectives of this lecture are:
 \label{fig:CFWH}
 \end{marginfigure}
 
-\item An intercooler or precooler used in a Brayton power cycle rejects heat from a gas working fluid to some cooling medium.  
+\item An inter-cooler or precooler used in a Brayton power cycle rejects heat from a gas working fluid to some cooling medium.  
 
 \item A regenerator used in a Brayton cycle has gas on both the high- and low-temperature side of the heat exchanger.  
 \end{itemize}
@@ -44,13 +44,13 @@ What we have not done is investigate in any level of detail the thermal or hydra
 \label{fig:magnox}
 \end{marginfigure}
 
-Heat exchangers with extended surfaces are envisioned for use in Gen IV reactor concepts in which heat transfer occurs between high Nusselt number fluids---such as liquid lead or sodium---and low Nusselt number fluids such as carbon dioxide, air, or helium.\marginnote{\textbf{Nusselt number} is a non-dimensional parameter that characterizes the convective heat transfer capability of a fluid relative to thermal conductivity.  
+Heat exchangers with extended surfaces are envisioned for use in Gen IV reactor concepts in which heat transfer occurs between highly conductive fluids---such as liquid lead or sodium---and fluids that conduct heat poorly such as carbon dioxide, air, or helium.\marginnote{\textbf{Nusselt number} is a non-dimensional parameter that characterizes the convective heat transfer capability of a fluid relative to thermal conductivity.  
 \index{Nusselt number}
 
 $$\text{Nu} = \frac{hL}{k}$$
-where $h$ is the convective heat transfer coefficient, $k$ is the thermal conductivity and $L$ is some characteristic length, such as a pipe diameter.} The idea is to disrupt the thermal boundary layer on the side with the low Nusselt number fluid by using surface features that force complex flow behavior near the heat transfer surface.  The benefit is improved convective heat transfer; the price we pay is increased hydraulic pressure losses.  
+where $h$ is the convective heat transfer coefficient, $k$ is the thermal conductivity and $L$ is some characteristic length, such as a pipe diameter.} The idea is to disrupt the thermal boundary layer on the side where heat transfer would otherwise be poor by using surface features that force complex flow behavior near the heat transfer surface.  The benefit is improved convective heat transfer; the price we pay is increased hydraulic pressure losses.  
 
-A desirable extended surface design is one where the convective enhancement outweighs the hydraulic penalty. To ensure the convective enhancement outweighs the hydraulic penalty, a thermal performance factor\cite{maradiya2018heat}, such as $\eta$ shown in Equation \ref{eq:tpf} might be defined.
+A desirable extended surface design is one where the convective enhancement outweighs the hydraulic penalty. If we wanted to quantify this trade-off, a thermal performance factor,\cite{maradiya2018heat} such as $\eta$ shown in Equation \ref{eq:tpf} might be defined.
 \index{thermal performance factor}
 \begin{equation}
 \eta = \frac{\sfrac{\text{Nu}}{\text{Nu}_0}}{(\sfrac{f}{f_0})^{1/3}}
