@@ -96,7 +96,7 @@ where $h$ and $s$ are the enthalpy and entropy of the working fluid; $h_o$ and $
 
 \index{Exergy Balance}
 \subsection{Exergy Balance}
-\newthought{Unlike energy,} exergy is not conserved.  One can think of exergy like energy: we pass exergy in from a high energy source like the primary coolant of a PWR; we convert some of that exergy to work and some that is left over we have to reject to the environment.  But unlike energy, exergy can be destroyed. Exergy can also be lost through other means like heat transfer to the surrounding medium.\sidenote[][-1cm]{For example: steam piping passing through the engineroom of a submarine is hot; despite its lagging, it transfer some energy to the surrounding environment.  This is a loss of exergy that can be taken into account.}
+\newthought{Unlike energy,} exergy is not conserved.  One can think of exergy like energy: we pass exergy in from a high energy source like the primary coolant of a PWR; we convert some of that exergy to work and some that is left over we have to reject to the environment.  But unlike energy, exergy can be destroyed. Exergy can also be lost through other means like heat transfer to the surrounding medium.\sidenote[][-1cm]{For example: steam piping passing through the engineroom of a submarine is hot; despite its lagging, it transfers some energy to the surrounding environment.  This is a loss of exergy that can be taken into account.}
 
 We want to account for exergy in much the same way that we account for energy.  In words, this accounting balance looks like this:
 
@@ -107,7 +107,7 @@ In equation form this translates as follows:
 $$\sum_i \dot{m}_i e_{f_i} - \sum_e \dot{m}_e e_{f_e} = \sum_j \left(1-\frac{T_o}{T_j} \right)\dot{Q_j}+\dot{W} + \dot{E}_d$$
 The terms are interpreted as follows:
 \begin{itemize}
-\item $\sum_i\dot{m}_e e_{f_e}$ is the sum of all flow exergy going \emph{in} to a particular process.  The variable $i$ corresponds to all of the inflows; $\dot{m}_i$ is the mass flow rate for each in-flow and $e_{f_e}$ is the specific flow exergy for each inflow.
+\item $\sum_i\dot{m}_i e_{f_i}$ is the sum of all flow exergy going \emph{in} to a particular process.  The variable $i$ corresponds to all of the inflows; $\dot{m}_i$ is the mass flow rate for each in-flow and $e_{f_i}$ is the specific flow exergy for each inflow.
 \item $\sum_e \dot{m}_e e_{f_e}$ has the same meaning but for all flows \emph{exiting} a particular process.
 \item $\sum_j \left(1-\sfrac{T_o}{T_j} \right)\dot{Q_j}$ is exergy transfer through heat. The variable $j$ enumerates all of the exit points for exergy transfer through heat for the system. $\dot{Q}_j$ is the corresponding rate of heat loss, $T_j$ is the temperature at which this heat is lost, and $T_o$ is the dead state temperature.
 \item $\dot{W}$ is the rate of exergy transfer through work.  Any process that does work (e.g. turbine, pump, compressor) transfers exergy out of (turbine) or into (pump or compressor) the working fluid.

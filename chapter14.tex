@@ -9,7 +9,7 @@ The objectives of this lecture are:
 
 \index{Combined cycle}
 \section{Combined Cycle by Example}
-\newthought{One approach to} improving the thermal efficiency of the nuclear energy conversion process is to combine Brayton and Rankine cycles.  This is similar in concept to a regenerated Brayton cycle in that waste heat remaining after expansion of the working fluid through a turbine is recovered in some way.  Rather than using the energy to pre-heat the working fluid as in a regenerative Brayton cycle, the high temperature gasses are used as heat input to an entirely different thermodynamic cycle.  One such cycle\cite{forsberg2014meeting} is illustrated in the schematic in Figure \ref{fig:FHR_schematic}.  Key system parameters are summarized in Table \ref{tab:FHR_params}.  State point property data are tabulated in Figure \ref{fig:combined_cycle_SPT}.
+\newthought{A different approach to} improving the thermal efficiency of the nuclear energy conversion process is to use a \emph{combined cycle}.  In this concept, we use thermal energy remaining in the working fluid after expansion in a turbine as input into \emph{another} thermodynamic cycle; a portion of that heat is thus converted to work.  Since this was done with no additional heat being added, thermal efficiency is improved by increasing the net specific work.  Compare this with regenerating Brayton cycles that increase thermal efficiency by reducing the amount of heat that must be added per unit mass of working fluid with no change in specific work output.  In principle there are many different types of combined cycles one might explore but in this course we will focus on Brayton-Rankine combined cycles where waste heat from a Brayton cycle is used as heat input for a Rankine ``bottoming cycle.''  One such cycle\cite{forsberg2014meeting} is illustrated in the schematic in Figure \ref{fig:FHR_schematic}.  Key system parameters are summarized in Table \ref{tab:FHR_params}.  State point property data are tabulated in Figure \ref{fig:combined_cycle_SPT}.
 
 \newthought{One notable feature} of this analysis is the inclusion of hydraulic pressure losses.  In previous cycle analyses, it was assumed either explicitly or implicitly that heat transfer processes in a Brayton cycle would take place at constant pressure.  In reality, viscous flow through complex heat exchanger geometry results in frictional pressure drops.  
 
@@ -51,7 +51,7 @@ Take for example air flow into the compressor.  Air is drawn from the atmosphere
 
 Similarly, air flowing from the compressor discharge through the heat exchanger between state points 2 and 3 cannot be expected to pass through the complex heat exchanger geometry without some flow-energy losses.  For this problem, the pressure loss $\Delta P_{HX} = P_3 - P_2 = 10$kPa.  In upcoming lectures we will examine techniques for quantifying hydraulic pressure losses in the context of diabatic flows such as this one.
 
-For the purposes of lecture and associated homework problems, we will take hydraulic pressure losses to be given parameters.  The losses will be expressed either as:
+For the purposes of lectures and associated homework problems, we will take hydraulic pressure losses to be given parameters.  The losses will be expressed either as:
 \begin{enumerate}
 \item fixed given $\Delta P$ as with the two cases just described; or
 \item a fractional pressure drop where the $\Delta P$ for a given process will be given as a fraction of the state point pressure at the process inlet. 
@@ -77,7 +77,7 @@ $$ \frac{\dot{m}_s}{\dot{m}_a} = \frac{h_6 - h_7}{h_{10}-h_9}$$
 
 \item What is the net specific work for this cycle?
 
-In this case, we need to be a bit more specific about what we mean by ``specific work.'' Normally the specific work is the power divided by the mass flow rate of the working fluid; but in this cycle we have two different working fluids with generally different flow rates.  In order to perform a consistent analysis of the cycle we should define specific work to be power per unit mass flow rate of \emph{one} of the working fluids; for this cycle we will choose the air in the Brayton cycle is the reference working fluid.
+In this case, we need to be a bit more specific about what we mean by ``specific work.'' Normally the specific work is the power divided by the mass flow rate of the working fluid; but in this cycle we have two different working fluids with generally different flow rates.  In order to perform a consistent analysis of the cycle we should define specific work to be power per unit mass flow rate of \emph{one} of the working fluids; for this cycle we will choose the air in the Brayton cycle as the reference working fluid.
 
 \begin{align*}
 w_{\text{net}} &= \frac{\dot{W}}{\dot{m}_a} \\

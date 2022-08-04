@@ -18,11 +18,11 @@ The objectives of this lecture are:
 \label{fig:rrsco2_schematic}
 \end{figure}
 
-\newthought{Compared to } some of the more complex Rankine cycles analyzed in earlier lectures, this cycle is relatively simple with only 8 state points.  Still, there are some challenges to be overcome.  Let us suppose that we know the minimum and maximum pressure and temperature for the working fluid; we know the isentropic efficiency of the turbine and both compressors; and we can assume a value of regenerator effectiveness for both the low- and high-temperature regenerators.
+\newthought{Compared to } some of the more complex Rankine cycles analyzed in earlier lectures, this cycle is relatively simple with only 8 state points.  Still, there are some challenges to be overcome.  Let us suppose that we know the minimum and maximum pressure and temperature for the working fluid; we know (or can assume appropriate values for) the isentropic efficiency of the turbine and both compressors and we can assume a value of regenerator effectiveness for both the low- and high-temperature regenerators.
 \begin{itemize}
-\item with the aforementioned given data, we should be able to calculate thermodynamic properties at state point 1 and 2 along with 5 and 6. 
-\item If we do not know the flow fraction $f$ of working fluid going through the pre-cooler---and why would we?---then we cannot calculate the temperature or enthalpy of state point 3;
-\item without knowing the temperature or enthalpy of state point 3, we cannot calculate properties of state point 4, 7, or 8 either.
+\item With the aforementioned given and assumed data, we should be able to calculate thermodynamic properties at state point 1 and 2 along with 5 and 6. 
+\item If we do not know the flow fraction $f$ of working fluid going through the pre-cooler then we cannot calculate the temperature or enthalpy of state point 3;
+\item Without knowing the temperature or enthalpy of state point 3, we cannot calculate properties of state point 4, 7, or 8 either.
 \end{itemize}
 We have a total of 5 unknown properties---f, and the enthalpy/temperature of state points 3,4,7, and 8---and thus need to develop 5 independent relationships.  As with previous cycles, these equations in general will be non-linear and values of the dependent variables need to be constrained to ensure a physically meaningful solution.  We will form these equations using the following relationships:\marginnote[1.5cm]{\textbf{Note: }The equations are all re-arranged in the MATLAB code to facilitate use with FMINCON.  
 
