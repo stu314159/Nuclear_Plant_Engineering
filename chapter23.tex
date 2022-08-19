@@ -146,13 +146,13 @@ For organic liquids:
 
 For petroleum fractions:
 \begin{equation}
-\text{Nu}_{\infty} = 0.23 \text{Re}^{0.8}\text{Pr}^{\sfrac{1}{3}}\left(\frac{\mu_w}{\mu} \right)^{-0.14}
+\text{Nu}_{\infty} = 0.027 \text{Re}^{0.8}\text{Pr}^{\sfrac{1}{3}}\left(\frac{\mu_w}{\mu} \right)^{-0.14}
 \label{eq:st-petroleum}
 \end{equation}
 
 For air:
 \begin{equation}
-\text{Nu}_{\infty} = 0.027 \text{Re}^{0.8}\text{Pr}^{\sfrac{1}{3}}\left(\frac{\mu_w}{\mu} \right)^{-0.14}
+\text{Nu}_{\infty} = 0.023 \text{Re}^{0.8}\text{Pr}^{\sfrac{1}{3}}\left(\frac{\mu_w}{\mu} \right)^{-0.14}
 \label{eq:st-air}
 \end{equation}
 where for Equation \ref{eq:st-petroleum} and \ref{eq:st-air} all material properties should be evaluated at the bulk condition except, of course, $\mu_w$ which should be evaluated at the prevailing temperature and pressure along the wall.  The range of applicability of the Seider and Tate correlations will be taken to be the same as those for the Dittus-Boelter correlation.
@@ -174,10 +174,8 @@ For gases:
 \end{equation}
 where $1.5 < \text{Pr} < 500$, and $2300 < \text{Re} < 5 \times 10^6$.
 
-\subsection{Petukhov} \index{Petukhov correlation}
-In cases where heating and cooling of the fluid result in significant variation in the physical properties, one should use the correlations due to Petukhov\cite{petukhov1970heat} which we first met in the hydraulics section of this course.
-
-In this case, the basic Nusselt number will be calculated as:
+\subsection{Diabetic flow} 
+In cases where heating and cooling of the fluid result in significant variation in the physical properties, one should use the correlations due to Gnielinski which is an extension of the Petukhov correlation that we used in our hydraulic analysis.  In this case, the basic Nusselt number will be calculated as:
 
 \begin{equation}
 \text{Nu}_{D} = \frac{\left(\sfrac{f}{8}\right)(\text{Re} - 1000)\text{Pr}}{1+12.7\sqrt{\sfrac{f}{8}}\left(\text{Pr}^{\sfrac{2}{3}}-1 \right)}
