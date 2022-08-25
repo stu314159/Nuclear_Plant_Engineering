@@ -25,7 +25,7 @@ What is EasyProp? \index{EasyProp}
 How do I access EasyProp?
 
 \begin{enumerate}
-\item Login to \emph{ESSEX} via remote desktop and use any version of MATLAB installed
+\item Login to \emph{ESSEX} via remote desktop and use MATLAB R2020 to carry out your calculations.\marginnote{\textbf{Note: } At the time of this writing, \emph{ESSEX} uses Python version 3.6 which is not supported by releases of MATLAB newer than R2020b.} 
 \begin{enumerate}
 \item All software tools and libraries needed to use EasyProp have already been installed on this platform.
 \item Users \emph{may} need to run \emph{pyversion\_fixer.m}\marginnote{The script \emph{pyversion\_fixer.m} will be made available to students as necessary.} to invoke the MATLAB built-in function \emph{pyversion} with the path to the local Python installation on \emph{ESSEX}.
@@ -35,7 +35,8 @@ Or
 \begin{enumerate}[resume]
 \item Install the required Python and MATLAB tools on your own laptop.
 \begin{enumerate}
-\item Download Anaconda (Anaconda3, Windows 64-bit, Python version 3.8) \marginnote[-2.25cm]{\textbf{Note: }If you opt for this method, you will have Python installed on your own laptop.  This is worthwhile.  When you graduate from USNA you will lose access to MATLAB along with all of the other non-free software packages that you may have become accustomed to using as a midshipman.  Python is free and you can take it with you and it can become the most powerful tool in your computational toolbox.}
+\item Download Anaconda (Anaconda3, Windows 64-bit, Python version 3.9) \marginnote[-2.25cm]{\textbf{Note: }If you opt for this method, you will have Python installed on your own laptop.  This is worthwhile.  When you graduate from USNA you will lose access to MATLAB along with all of the other non-free software packages that you may have become accustomed to using as a midshipman.  Python is free and you can take it with you and it can become the most powerful tool in your computational toolbox.}
+\marginnote{\textbf{Note: } Depending on which version of MATLAB you are using, it may be necessary for you to install an older version of Python.  Consult The MathWorks website for compatibility constraints.}
 \item From Anaconda prompt: conda install -c conda-forge coolprop
 \item Locate Python executable.  One way to do this is from Anaconda prompt use the command: where python
 \item In MATLAB call \emph{pyversion} with path to Python executable. E.g. >>pyversion('[path to python executable]')
@@ -108,7 +109,7 @@ Pmin = 1.5; % psia, min pressure
 \end{lstlisting}
 
 \begin{enumerate}[resume]
-\item Allocate fluid property arrays \marginnote{Pre-allocation of arrays is mandated in the ER468 style rules.  In this example we construct the arrays using the \emph{nan} function which, besides allocating memory for the arrays, initializes each value to ``Not-a-number'' (or \emph{nan}).  ``Not-a-number'' is preferred because it can never be mistaken for a number and thus can never be mistaken for a valid property value. This avoids the common logical error of using an array value with some valid-but-incorrect initial value (like zero).}  
+\item Allocate fluid property arrays \marginnote{Pre-allocation of arrays is mandated in the ER468 style rules.  In this example we construct the arrays using the \emph{nan} function which, besides allocating memory for the arrays, initializes each value to ``Not-a-number'' (or \emph{nan}).  ``Not-a-number'' is preferred because it can never be mistaken for a number and thus can never be mistaken for a valid property value. This avoids the common logical error of using an array entry with some valid-but-incorrect initial value (like zero).}  
 \end{enumerate}
 
 \begin{lstlisting}[caption=Allocate arrays to hold fluid property data.]
